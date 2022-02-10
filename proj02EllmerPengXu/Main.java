@@ -1,3 +1,12 @@
+/*
+* File: Main.java
+* Names: Ian Ellmer, Ricky Peng, and Andy Xu
+* Class: CS 361
+* Project 2
+* Date: February 14th
+*/
+
+
 package proj02EllmerPengXu;
 
 import javafx.application.Application;
