@@ -10,20 +10,54 @@
 package proj02EllmerPengXu;
 
 import javafx.application.Application;
-//import javafx.application.Platform;
-//import javafx.scene.Scene;
-//import javafx.scene.control.*;
-//import javafx.scene.layout.AnchorPane;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-//import javafx.scene.layout.VBox;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
 
-public class Main extends Application{
-    @Override
-    public void start(Stage primaryStage){
 
+
+public class Main extends Application
+{
+
+    @FXML
+    private Button helloButton;
+    @FXML
+    private Button goodbyeButton;
+
+    @FXML
+    private void handleHelloButton(ActionEvent event) {
+        // the handler method for the hello button
+        // this is a test. creates a new stage only
+        Stage secondaryStage = new Stage();
+        secondaryStage.setTitle("Give Me a number");
+        secondaryStage.show();
     }
 
+    // needs to implement handlers for the rest buttons ...
+    
+
+    @Override
+    public void start(Stage primaryStage) throws java.io.IOException {
+
+        // load fxml file
+        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        primaryStage.setTitle("Project 2");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+
+    }
+    
+
     public static void main(String[] args) {
+
         launch(args);
+
     }
 }
