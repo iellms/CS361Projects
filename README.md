@@ -1,4 +1,4 @@
-# CS361Projects
+# CS361 Projects Repository
 
 ## Welcome to Object Oriented Design with Ian Ellmer as your Groupmate!
 
