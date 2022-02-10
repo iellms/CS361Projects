@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.event.ActionEvent;
 
 
@@ -32,9 +33,11 @@ public class Main extends Application
     private void handleHelloButton(ActionEvent event) {
         // the handler method for the hello button
         // this is a test. creates a new stage only
-        Stage secondaryStage = new Stage();
-        secondaryStage.setTitle("Give Me a number");
-        secondaryStage.show();
+        TextInputDialog inputDialog = new TextInputDialog();
+        inputDialog.setTitle("Give me a number");
+        inputDialog.setHeaderText("Give me an integer from 0 to 255:");
+        inputDialog.showAndWait(); 
+        ((Button) event.getTarget()).setText(inputDialog.getEditor().getText());
     }
 
     // needs to implement handlers for the rest buttons ...
