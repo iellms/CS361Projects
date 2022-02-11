@@ -1,9 +1,11 @@
 #helloButton{
-    -fx-background-color: "#90EE90";
+    -fx-background-color: LightGreen;
+    -fx-border-color: Black
 }
 
 #goodbyeButton{
-    -fx-background-color: "pink";
+    -fx-background-color: LightPink;
+    -fx-border-color: Black
 }
 
 .button{

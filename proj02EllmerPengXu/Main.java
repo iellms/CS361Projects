@@ -10,6 +10,7 @@
 package proj02EllmerPengXu;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
 
 
@@ -28,6 +30,8 @@ public class Main extends Application
     private Button helloButton;
     @FXML
     private Button goodbyeButton;
+    @FXML
+    private TextArea textBox;
 
     @FXML
     private void handleHelloButton(ActionEvent event) {
@@ -37,10 +41,24 @@ public class Main extends Application
         inputDialog.setTitle("Give me a number");
         inputDialog.setHeaderText("Give me an integer from 0 to 255:");
         inputDialog.showAndWait(); 
-        ((Button) event.getTarget()).setText(inputDialog.getEditor().getText());
+        helloButton.setText(inputDialog.getEditor().getText());
     }
 
-    // needs to implement handlers for the rest buttons ...
+    @FXML
+    private void handleExitButton(ActionEvent event){
+        Platform.exit();
+    }
+
+    @FXML
+    private void handleGoodbyeButton(ActionEvent event){
+        textBox.setText(textBox.getText() + " Goodbye");
+    }
+
+    @FXML
+    private void handleResetButton(ActionEvent event){
+        helloButton.setText("Hello"); 
+        textBox.setText("Sample Text");
+    }
     
 
     @Override

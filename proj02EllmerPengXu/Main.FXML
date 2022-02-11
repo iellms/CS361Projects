@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +15,7 @@
       <HBox layoutY="28.0" prefHeight="61.0" prefWidth="368.0" spacing="10.0" AnchorPane.bottomAnchor="273.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
          <children>
             <Button fx:id="helloButton" mnemonicParsing="false" onAction="#handleHelloButton" text="Hello" />
-            <Button fx:id="goodbyeButton" mnemonicParsing="false" text="Goodbye" />
+            <Button fx:id="goodbyeButton" mnemonicParsing="false" onAction="#handleGoodbyeButton" text="Goodbye" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -24,12 +25,13 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Reset" />
-                  <MenuItem mnemonicParsing="false" text="Exit" />
+              <MenuItem mnemonicParsing="false" onAction="#handleResetButton" text="Reset" />
+              <SeparatorMenuItem> </SeparatorMenuItem>
+              <MenuItem mnemonicParsing="false" text="Exit" onAction="#handleExitButton"/>
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <TextArea layoutX="5.0" layoutY="104.0" prefHeight="245.0" prefWidth="359.0" promptText="Sample text" />
+      <TextArea fx:id="textBox" layoutX="5.0" layoutY="104.0" prefHeight="245.0" prefWidth="359.0" text="Sample text" />
    </children>
 </AnchorPane>
