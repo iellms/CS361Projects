@@ -8,21 +8,21 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj02EllmerPengXu.Main">
+<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj02EllmerPengXu.Main">
     <children>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleResetButton" text="Reset" />
+                        <MenuItem onAction="#handleResetMenuItem" text="Reset" />
                         <SeparatorMenuItem> </SeparatorMenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#handleExitButton" text="Exit" />
+                        <MenuItem onAction="#handleExitMenuItem" text="Exit" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
         <TextArea fx:id="textBox" layoutX="5.0" layoutY="129.0" text="Sample text" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0" />
-          <Button fx:id="goodbyeButton" layoutX="99.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleGoodbyeButton" prefHeight="35.0" prefWidth="90.0" text="Goodbye" />
-          <Button fx:id="helloButton" layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleHelloButton" prefHeight="35.0" prefWidth="70.0" text="Hello" />
+          <Button fx:id="goodbyeButton" layoutX="99.0" layoutY="47.0" onAction="#handleGoodbyeButton" prefHeight="35.0" prefWidth="90.0" text="Goodbye" />
+          <Button fx:id="helloButton" layoutX="14.0" layoutY="47.0" onAction="#handleHelloButton" prefHeight="35.0" prefWidth="70.0" text="Hello" />
     </children>
 </AnchorPane>
