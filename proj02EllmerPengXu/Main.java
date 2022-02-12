@@ -1,14 +1,15 @@
 /*
-* File: Main.java
-* Names: Ian Ellmer, Ricky Peng, and Andy Xu
-* Class: CS 361
-* Project 2
-* Date: February 14th
-*/
+ * File: Main.java
+ * Names: Ian Ellmer, Ricky Peng, and Andy Xu
+ * Class: CS 361
+ * Project 2
+ * Date: February 14th
+ */
 
 
 package proj02EllmerPengXu;
 
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -35,13 +36,16 @@ public class Main extends Application
 
     @FXML
     private void handleHelloButton(ActionEvent event) {
-        // the handler method for the hello button
-        // this is a test. creates a new stage only
+
         TextInputDialog inputDialog = new TextInputDialog();
         inputDialog.setTitle("Give me a number");
         inputDialog.setHeaderText("Give me an integer from 0 to 255:");
-        inputDialog.showAndWait(); 
-        helloButton.setText(inputDialog.getEditor().getText());
+        // an optional that contains the result of the dialogue
+        Optional<String> result = inputDialog.showAndWait();
+        // if the ok button is pressed
+        if (result.isPresent()) {
+            helloButton.setText(inputDialog.getEditor().getText());
+        }
     }
 
     @FXML
@@ -56,10 +60,10 @@ public class Main extends Application
 
     @FXML
     private void handleResetButton(ActionEvent event){
-        helloButton.setText("Hello"); 
+        helloButton.setText("Hello");
         textBox.setText("Sample Text");
     }
-    
+
 
     @Override
     public void start(Stage primaryStage) throws java.io.IOException {
@@ -74,7 +78,7 @@ public class Main extends Application
 
 
     }
-    
+
 
     public static void main(String[] args) {
 
