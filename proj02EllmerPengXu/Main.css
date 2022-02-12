@@ -1,13 +1,18 @@
 #helloButton{
     -fx-background-color: LightGreen;
-    -fx-border-color: Black
 }
 
 #goodbyeButton{
     -fx-background-color: LightPink;
-    -fx-border-color: Black
 }
 
 .button{
-    -fx-font-size: 20;
+    -fx-border-color: Black;
+    -fx-font-size: 11pt;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.root{
+    -fx-font-size: 11pt;
 }
