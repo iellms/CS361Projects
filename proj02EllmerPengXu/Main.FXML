@@ -7,11 +7,10 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj02EllmerPengXu.Main">
     <children>
-        <MenuBar prefHeight="26.0" prefWidth="355.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -22,16 +21,8 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TextArea fx:id="textBox" layoutX="5.0" layoutY="129.0" prefHeight="135.0" prefWidth="240.0" text="Sample text" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0" />
-          <Button fx:id="goodbyeButton" layoutX="76.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleGoodbyeButton" text="Goodbye">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-          <Button fx:id="helloButton" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleHelloButton" text="Hello">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
+        <TextArea fx:id="textBox" layoutX="5.0" layoutY="129.0" text="Sample text" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0" />
+          <Button fx:id="goodbyeButton" layoutX="99.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleGoodbyeButton" prefHeight="35.0" prefWidth="90.0" text="Goodbye" />
+          <Button fx:id="helloButton" layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleHelloButton" prefHeight="35.0" prefWidth="70.0" text="Hello" />
     </children>
 </AnchorPane>
