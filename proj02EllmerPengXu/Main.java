@@ -95,7 +95,7 @@ public class Main extends Application
     @FXML
     private void handleResetMenuItem(ActionEvent event){
         helloButton.setText("Hello");
-        textBox.setText("Sample Text");
+        textBox.setText("Sample text");
     }
 
     /**
