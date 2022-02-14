@@ -52,7 +52,8 @@ public class Main extends Application {
         inputDialog.setHeaderText("Give me an integer from 0 to 255:");
         // showAndWeight() returns an optional that contains the result of the dialogue
         Optional<String> result = inputDialog.showAndWait();
-        // if the ok button is clicked
+
+        // If the ok button is clicked
         if (result.isPresent()) {
             helloButton.setText(inputDialog.getEditor().getText());
         }
@@ -67,7 +68,7 @@ public class Main extends Application {
      */
     @FXML
     private void handleGoodbyeButton(ActionEvent event) {
-        textBox.setText(textBox.getText() + " Goodbye");
+        textBox.appendText(" Goodbye");
     }
 
     /**
@@ -97,10 +98,10 @@ public class Main extends Application {
 
     /**
      * Implements the start method of the Application class. This method will
-     * be called after launch() method, and it is responsible for initializing
+     * be called after {@code launch} method, and it is responsible for initializing
      * the contents of the window.
      *
-     * @param primaryStage A Stage object that is created by the launch() method
+     * @param primaryStage A Stage object that is created by the {@code launch} method
      *                     inherited from the Application class.
      */
     @Override

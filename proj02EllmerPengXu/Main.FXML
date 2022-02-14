@@ -21,8 +21,8 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TextArea fx:id="textBox" layoutX="5.0" layoutY="82.0" prefHeight="160.0" prefWidth="290.0" text="Sample text" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="75.0" />
-          <Button fx:id="goodbyeButton" layoutX="60.0" layoutY="35.0" onAction="#handleGoodbyeButton" prefHeight="30.0" prefWidth="80.0" text="Goodbye" />
-          <Button fx:id="helloButton" layoutX="5.0" layoutY="35.0" onAction="#handleHelloButton" prefHeight="30.0" prefWidth="50.0" text="Hello" />
+        <TextArea fx:id="textBox" layoutX="5.0" layoutY="80.0" prefHeight="160.0" prefWidth="290.0" text="Sample text" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="75.0" />
+          <Button fx:id="goodbyeButton" layoutX="63.0" layoutY="35.0" onAction="#handleGoodbyeButton" prefHeight="30.0" prefWidth="80.0" text="Goodbye" />
+          <Button fx:id="helloButton" layoutX="8.0" layoutY="35.0" onAction="#handleHelloButton" prefHeight="30.0" prefWidth="50.0" text="Hello" />
     </children>
 </AnchorPane>
