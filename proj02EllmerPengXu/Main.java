@@ -6,7 +6,6 @@
  * Date: February 14th
  */
 
-
 package proj02EllmerPengXu;
 
 import java.util.Optional;
@@ -22,7 +21,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
 
-
 /**
  * Main class serves as the controller for the window.
  *
@@ -30,8 +28,7 @@ import javafx.event.ActionEvent;
  * @author Ricky Peng
  * @author Andy Xu
  */
-public class Main extends Application
-{
+public class Main extends Application {
 
     @FXML
     private Button helloButton;
@@ -44,8 +41,8 @@ public class Main extends Application
      * The text of hello button will be changed to the user input if
      * user clicks ok button of the dialogue.
      *
-     * @param event  An ActionEvent object that gives information about the event
-     *               and its source.
+     * @param event An ActionEvent object that gives information about the event
+     *              and its source.
      */
     @FXML
     private void handleHelloButton(ActionEvent event) {
@@ -65,11 +62,11 @@ public class Main extends Application
      * Handler method for goodbye button. When goodbye button is clicked,
      * the word "Goodbye" will append to the text in the text box.
      *
-     * @param event  An ActionEvent object that gives information about the event
-     *               and its source.
+     * @param event An ActionEvent object that gives information about the event
+     *              and its source.
      */
     @FXML
-    private void handleGoodbyeButton(ActionEvent event){
+    private void handleGoodbyeButton(ActionEvent event) {
         textBox.setText(textBox.getText() + " Goodbye");
     }
 
@@ -77,11 +74,11 @@ public class Main extends Application
      * Handler method for exit menu bar item. When exit item of the menu
      * bar is clicked, the window disappears and the application quits.
      *
-     * @param event  An ActionEvent object that gives information about the event
-     *               and its source.
+     * @param event An ActionEvent object that gives information about the event
+     *              and its source.
      */
     @FXML
-    private void handleExitMenuItem(ActionEvent event){
+    private void handleExitMenuItem(ActionEvent event) {
         Platform.exit();
     }
 
@@ -89,11 +86,11 @@ public class Main extends Application
      * Handler method for reset menu bar item. When reset item of the menu
      * bar is clicked, the window will be restored to its initial contents.
      *
-     * @param event  An ActionEvent object that gives information about the event
-     *               and its source.
+     * @param event An ActionEvent object that gives information about the event
+     *              and its source.
      */
     @FXML
-    private void handleResetMenuItem(ActionEvent event){
+    private void handleResetMenuItem(ActionEvent event) {
         helloButton.setText("Hello");
         textBox.setText("Sample text");
     }
@@ -103,34 +100,37 @@ public class Main extends Application
      * be called after launch() method, and it is responsible for initializing
      * the contents of the window.
      *
-     * @param primaryStage  A Stage object that is created by the launch() method
-     *                      inherited from the Application class.
+     * @param primaryStage A Stage object that is created by the launch() method
+     *                     inherited from the Application class.
      */
     @Override
     public void start(Stage primaryStage) throws java.io.IOException {
 
-        // load fxml file
+        // Load fxml file
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
         primaryStage.setTitle("Project 2");
         Scene scene = new Scene(root);
-        // load css file
+
+        // Load css file
         scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
         primaryStage.setScene(scene);
-        // set the minimum height and width of the stage
+
+        // Set the minimum height and width of thmaine stage
         primaryStage.setMinHeight(250);
         primaryStage.setMinWidth(300);
-        // show the stage
-        primaryStage.show();
 
+        // Show the stage
+        primaryStage.show();
 
     }
 
     /**
-     * Calls launch() inherited from the Application class
+     * Main method of the program that calls {@code launch} inherited from the
+     * Application class
+     * 
+     * @param args
      */
     public static void main(String[] args) {
-
         launch(args);
-
     }
 }
