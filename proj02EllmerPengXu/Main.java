@@ -101,7 +101,8 @@ public class Main extends Application {
      * be called after {@code launch} method, and it is responsible for initializing
      * the contents of the window.
      *
-     * @param primaryStage A Stage object that is created by the {@code launch} method
+     * @param primaryStage A Stage object that is created by the {@code launch}
+     *                     method
      *                     inherited from the Application class.
      */
     @Override
