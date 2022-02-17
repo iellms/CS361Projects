@@ -14,9 +14,26 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem text="Reset" />
+                        <MenuItem text="About..." />
                         <SeparatorMenuItem> </SeparatorMenuItem>
-                        <MenuItem text="Exit" />
+                        <MenuItem text="New" />
+                        <MenuItem text="Open..." />
+                        <MenuItem text="Close" />
+                        <MenuItem text="Save" />
+                        <MenuItem text="Save as..." />
+                        <SeparatorMenuItem> </SeparatorMenuItem>
+                        <MenuItem text="Exit"/>
+
+                    </items>
+                </Menu>
+                 <Menu text="Edit">
+                    <items>
+                        <MenuItem text="Undo" />
+                        <MenuItem text="Redo" />
+                        <MenuItem text="Cut" />
+                        <MenuItem text="Copy" />
+                        <MenuItem text="Paste" />
+                        <MenuItem text="Select all" />
                     </items>
                 </Menu>
             </menus>

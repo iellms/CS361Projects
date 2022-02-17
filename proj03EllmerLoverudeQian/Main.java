@@ -19,7 +19,7 @@ public class Main extends Application{
 
         // Load fxml file
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("Project 2");
+        primaryStage.setTitle("Project 3");
         Scene scene = new Scene(root);
 
         // Load css file
