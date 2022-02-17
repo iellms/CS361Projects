@@ -7,8 +7,10 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 
-<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj03EllmerLoverudeQian.Main">
+<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj03EllmerLoverudeQian.Controller">
     <children>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <menus>
@@ -22,7 +24,7 @@
                         <MenuItem text="Save" />
                         <MenuItem text="Save as..." />
                         <SeparatorMenuItem> </SeparatorMenuItem>
-                        <MenuItem text="Exit"/>
+                        <MenuItem text="Exit" onAction="#handleExitMenuItem"/>
 
                     </items>
                 </Menu>
@@ -38,8 +40,12 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TextArea fx:id="textBox" layoutX="5.0" layoutY="80.0" prefHeight="160.0" prefWidth="290.0" text="Sample text" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="75.0" />
-          <Button fx:id="goodbyeButton" layoutX="63.0" layoutY="35.0" prefHeight="30.0" prefWidth="80.0" text="Goodbye" />
-          <Button fx:id="helloButton" layoutX="8.0" layoutY="35.0" prefHeight="30.0" prefWidth="50.0" text="Hello" />
+        <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0"> 
+            <Tab text="test">
+                <TextArea fx:id="textBox"/> 
+            </Tab> 
+        </TabPane>
+          <!-- <Button fx:id="goodbyeButton" layoutX="63.0" layoutY="35.0" prefHeight="30.0" prefWidth="80.0" text="Goodbye" />
+          <Button fx:id="helloButton" layoutX="8.0" layoutY="35.0" prefHeight="30.0" prefWidth="50.0" text="Hello" /> -->
     </children>
 </AnchorPane>
