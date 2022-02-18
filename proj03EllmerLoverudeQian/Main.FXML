@@ -16,16 +16,15 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem text="About..." />
+                        <MenuItem text="About..." onAction="#handleAboutMenuItem"/>
                         <SeparatorMenuItem> </SeparatorMenuItem>
-                        <MenuItem text="New" />
-                        <MenuItem text="Open..." />
-                        <MenuItem text="Close" />
-                        <MenuItem text="Save" />
-                        <MenuItem text="Save as..." />
+                        <MenuItem text="New" onAction="#handleNewMenuItem" />
+                        <MenuItem text="Open..." onAction="#handleOpenMenuItem"/>
+                        <MenuItem text="Close" onAction="#handleCloseMenuItem"/>
+                        <MenuItem text="Save" onAction="#handleSaveMenuItem"/>
+                        <MenuItem text="Save as..." onAction="#handleSaveAsMenuItem"/>
                         <SeparatorMenuItem> </SeparatorMenuItem>
                         <MenuItem text="Exit" onAction="#handleExitMenuItem"/>
-
                     </items>
                 </Menu>
                  <Menu text="Edit">
