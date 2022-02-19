@@ -1,6 +1,9 @@
 package proj03EllmerLoverudeQian;
 
 
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 import java.io.File;
@@ -21,12 +24,14 @@ import javafx.scene.control.Alert.AlertType;
 // import javafx.scene.control.TextInputDialog;
 // import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Controller {
 
    // private ArrayList<Tab> tabList;
 
-    
 
     @FXML
     private TabPane tabPane;
@@ -135,10 +140,45 @@ public class Controller {
    }
 
 
- 
+    /**
+     * Handler for "open" menu item
+     * When the "open" button is clicked, a fileChooserDialog appears,
+     * and the user has to select a valid text file to proceed
+     *
+     * If a valid file is selected, the program reads the file's content as String
+     * and that String is put as content of the textarea of the new tab created
+     */
    @FXML
-   private void handleOpenMenuItem() {
-       
+   private void handleOpenMenuItem() throws IOException {
+       FileChooser fileChooser = new FileChooser();
+       fileChooser.setTitle("Open your text file");
+
+       // restrict the file type to only text files
+       fileChooser.getExtensionFilters().addAll(
+               new FileChooser.ExtensionFilter("Text Files", "*.txt")
+       );
+       File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
+
+       // if a valid file is selected
+       if (selectedFile != null) {
+           String filePath = selectedFile.getPath();
+           String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
+
+           Tab newTab = new Tab();
+
+           newTab.setText(getNextDefaultTitle());
+
+           tabPane.getTabs().add(newTab);
+
+           TextArea textArea = new TextArea(fileContent);
+
+           newTab.setContent(textArea);
+
+           SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+
+           selectionModel.select(newTab);
+       }
+
    }
  
    @FXML
@@ -154,8 +194,8 @@ public class Controller {
  
    }
     /**
-     * Handler for save as menu item
-     * When the save as button is clicked, a textInputDialog appears
+     * Handler for "save as" menu item
+     * When the "save as" button is clicked, a textInputDialog appears
      * and asks the file name for the text file
      *
      * If ok is clicked, it calls the createNewFile helper method and create a
@@ -163,10 +203,13 @@ public class Controller {
      */
    @FXML
    private void handleSaveAsMenuItem() {
+       // create a new text input dialog asking for filename
        TextInputDialog saveAsDialog = new TextInputDialog();
        saveAsDialog.setTitle("Save As");
        saveAsDialog.setHeaderText("Name your new text file");
+
        Optional<String> result = saveAsDialog.showAndWait();
+       // if the user pressed ok create a new file in that name
        if (result.isPresent()){
             String fileName = saveAsDialog.getEditor().getText();
             createNewFile(fileName);
@@ -205,6 +248,7 @@ public class Controller {
 
            }
            alert.showAndWait();
+           // handle ioexception from createNewFile method
        } catch (IOException e) {
            Alert alert = new Alert(AlertType.ERROR);
            alert.setTitle("Exception");
