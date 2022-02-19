@@ -1,18 +1,18 @@
 package proj03EllmerLoverudeQian;
 
+
 import java.util.Arrays;
+import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
 
 
-// import java.util.Optional;
+
 // import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.SingleSelectionModel;
 //import javafx.fxml.FXMLLoader;
 // import javafx.stage.Stage;
 // import javafx.scene.Parent;
@@ -153,10 +153,65 @@ public class Controller {
  
  
    }
- 
+    /**
+     * Handler for save as menu item
+     * When the save as button is clicked, a textInputDialog appears
+     * and asks the file name for the text file
+     *
+     * If ok is clicked, it calls the createNewFile helper method and create a
+     * new text file if none exist in the current director
+     */
    @FXML
    private void handleSaveAsMenuItem() {
+       TextInputDialog saveAsDialog = new TextInputDialog();
+       saveAsDialog.setTitle("Save As");
+       saveAsDialog.setHeaderText("Name your new text file");
+       Optional<String> result = saveAsDialog.showAndWait();
+       if (result.isPresent()){
+            String fileName = saveAsDialog.getEditor().getText();
+            createNewFile(fileName);
+       }
  
+   }
+
+    /**
+     * Helper method for creating a new file
+     * It creates a newFile if none existed and throws error message if an error is encountered
+     * @param (fileName) (the name of the text file that is going to be created)
+     * <p>Bugs: Need to ask the user if the file name already exist; doesn't show exception dialog if
+     *                   file name is invalid
+     */
+   private void createNewFile(String fileName){
+       File file = new File(fileName+".txt");
+
+       try {
+           // create a new file
+           boolean result = file.createNewFile();
+
+           // test if successfully created a new file
+           Alert alert;
+           if(result){
+               alert = new Alert(AlertType.INFORMATION);
+               alert.setTitle("Success");
+               alert.setHeaderText(null);
+               alert.setContentText("Successfully created "+fileName+".txt");
+
+           }
+           else{
+               alert = new Alert(AlertType.ERROR);
+               alert.setTitle("Error");
+               alert.setHeaderText(null);
+               alert.setContentText("Filed creating "+fileName+".txt");
+
+           }
+           alert.showAndWait();
+       } catch (IOException e) {
+           Alert alert = new Alert(AlertType.ERROR);
+           alert.setTitle("Exception");
+           alert.setHeaderText(null);
+           alert.setContentText("Exception creating "+fileName+".txt"
+           + "\n"+e.getMessage());
+       }
    }
 
     /**
