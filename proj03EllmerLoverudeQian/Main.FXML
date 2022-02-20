@@ -29,12 +29,12 @@
                 </Menu>
                  <Menu text="Edit">
                     <items>
-                        <MenuItem text="Undo" />
-                        <MenuItem text="Redo" />
-                        <MenuItem text="Cut" />
-                        <MenuItem text="Copy" />
-                        <MenuItem text="Paste" />
-                        <MenuItem text="Select all" />
+                        <MenuItem text="Undo" onAction="#handleUndo"/>
+                        <MenuItem text="Redo" onAction="#handleRedo"/>
+                        <MenuItem text="Cut" onAction="#handleCut"/>
+                        <MenuItem text="Copy" onAction="#handleCopy"/>
+                        <MenuItem text="Paste" onAction="#handlePaste"/>
+                        <MenuItem text="Select all" onAction="#handleSelectAll"/>
                     </items>
                 </Menu>
             </menus>

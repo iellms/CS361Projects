@@ -36,6 +36,7 @@ public class Controller {
     @FXML
     private TabPane tabPane;
 
+
     // an array that represents whether "untitled-x" current is an open tab
     private boolean[] untitledFileNameArray;
 
@@ -269,6 +270,79 @@ public class Controller {
     private void handleExitMenuItem(ActionEvent event) {
         Platform.exit();
     }
+
+    /**
+     * Handler method for "Undo" in the Edit menu
+     * Undo the previous textArea edition
+     */
+    @FXML
+    private void handleUndo(){
+        // get the current tab selected
+        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        // call the undo method
+        textBox.undo();
+    }
+
+    /**
+     * Handler method for "Redo" in the Edit menu
+     * Redo the previous textArea edition
+     */
+    @FXML
+    private void handleRedo(){
+        // get the current tab selected
+        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        // call the redo method
+        textBox.redo();
+    }
+
+    /**
+     * Handler method for "Cut" in the Edit menu
+     * Cut all the selected text in the textArea of the current Tab
+     */
+    @FXML
+    private void handleCut(){
+        // get the current tab selected
+        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        // call the cut method
+        textBox.cut();
+    }
+
+    /**
+     * Handler method for "Copy" in the Edit menu
+     * Copy the selected text from the textArea of the current Tab to the clipboard
+     */
+    @FXML
+    private void handleCopy(){
+        // get the current tab selected
+        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        // call the copy method
+        textBox.copy();
+    }
+
+    /**
+     * Handler method for "Paste" in the Edit menu
+     * Paste text from the clipboard to the textArea of the current Tab
+     */
+    @FXML
+    private void handlePaste(){
+        // get the current tab selected
+        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        // call the paste method
+        textBox.paste();
+    }
+
+    /**
+     * Handler method for "Select all" in the Edit menu
+     * Select all the text in the textArea of the current Tab
+     */
+    @FXML
+    private void handleSelectAll(){
+        // get the current tab selected
+        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        // call the select all method
+        textBox.selectAll();
+    }
+
 
     public static void main(String[] args){
 
