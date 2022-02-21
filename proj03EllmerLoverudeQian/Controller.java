@@ -11,6 +11,7 @@ import java.io.IOException;
 
 // import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -42,7 +43,6 @@ public class Controller {
         this.untitledFileNameArray = new boolean[16];
         Arrays.fill(this.untitledFileNameArray, false);
         this.untitledFileNameArray[0] = true;
-
 
     }
 
@@ -86,11 +86,18 @@ public class Controller {
      * "Untitled-1", or "Untitled-2", based on what is available.
      *
      * @see new tab and textarea
+     *
+     * <bug>for default tab, the close request handler may not work</bug>
     */
    @FXML
    private void handleNewMenuItem() {
        
         Tab newTab = new Tab();
+
+        // trigger close menu item handler when tab is closed
+        newTab.setOnCloseRequest((Event t) -> {
+            handleCloseMenuItem();
+        });
 
         newTab.setText(getNextDefaultTitle());
 
@@ -164,21 +171,83 @@ public class Controller {
            // read the content of the file to a string
            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
            // generate a new tab and put the file content into the text area
-           Tab newTab = new Tab();
-           newTab.setText(selectedFile.getPath());
-           tabPane.getTabs().add(newTab);
-           TextArea textArea = new TextArea(fileContent);
-           newTab.setContent(textArea);
-           // select the new tab created
-           SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-           selectionModel.select(newTab);
+           handleNewMenuItem();
+           // get the current tab
+           Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+           // get the current textBox
+           TextArea textBox = (TextArea) currentTab.getContent();
+           // set the content of the textBox
+           textBox.setText(fileContent);
+           // set the title of the tab
+           currentTab.setText(selectedFile.getPath());
        }
 
    }
- 
+
+    /**
+     * Handler for "Close" menu item
+     * When the "Close" button is clicked, or when the tab is closed, the program would check
+     * if any changes has been made since the last save event, a dialog appears asking if the user
+     * wants to save again
+     *
+     * After the user makes selection the tab is closed
+     *
+     * If no changes has been made, the tab also closes
+     *
+     */
    @FXML
    private void handleCloseMenuItem() {
- 
+        // check if changes has been made
+       boolean changed = false;
+       // get the current tab
+       Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+       // get content of textarea
+       TextArea textBox = (TextArea) currentTab.getContent();
+       String currentContent = textBox.getText();
+       // get the file associated with the current tab
+       File file = new File(currentTab.getText());
+
+       // check if the textarea has been modified
+       if(file.exists()) {
+           // check if the content of the file matches the content of the textarea
+           try {
+               String fileContent = new String(Files.readAllBytes(Paths.get(file.getPath())));
+               // if not it has been modified
+                if(!currentContent.equals(fileContent)) {
+                    changed = true;
+                }
+           } catch (IOException e) {
+               changed = true;
+           }
+       }
+       else {
+           changed = true;
+       }
+
+       // if it has been modified
+       if(changed) {
+           Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+           alert.setTitle(null);
+           alert.setContentText("Changes has been made, do you want to save it?");
+           ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+           ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+           ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+           alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+           alert.showAndWait().ifPresent(type -> {
+               if (type == okButton) {
+                   handleSaveMenuItem();
+                   tabPane.getTabs().remove(currentTab);
+               } else if (type == noButton) {
+                   tabPane.getTabs().remove(currentTab);
+               } else {
+                    // do nothing
+               }
+           });
+       }
+       // if no changes have been made, the tab also closes
+       else {
+           tabPane.getTabs().remove(currentTab);
+       }
  
    }
     /**
