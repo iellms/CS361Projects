@@ -1,28 +1,20 @@
 package proj03EllmerLoverudeQian;
 
 
-
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
-
-// import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-//import javafx.fxml.FXMLLoader;
-// import javafx.stage.Stage;
-// import javafx.scene.Parent;
-// import javafx.scene.Scene;
-// import javafx.scene.control.Button;
-// import javafx.scene.control.TextInputDialog;
-// import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
+
+
 public class Controller {
 
    // private ArrayList<Tab> tabList;
