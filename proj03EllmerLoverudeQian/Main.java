@@ -18,7 +18,6 @@ import javafx.scene.Scene;
 /**
  * The Main Class for loading the fxml file and building the stage
  *
- *
  * @author (Ian Ellmer, Leo Qian, Jasper Loverude)
  */
 public class Main extends Application{
