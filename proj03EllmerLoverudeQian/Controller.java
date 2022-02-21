@@ -143,6 +143,8 @@ public class Controller {
      *
      * If a valid file is selected, the program reads the file's content as String
      * and that String is put as content of the textarea of the new tab created
+     *
+     * The new tab will also be initiated with the path of the file opened
      */
    @FXML
    private void handleOpenMenuItem() throws IOException {
@@ -163,7 +165,7 @@ public class Controller {
            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
            // generate a new tab and put the file content into the text area
            Tab newTab = new Tab();
-           newTab.setText(getNextDefaultTitle());
+           newTab.setText(selectedFile.getPath());
            tabPane.getTabs().add(newTab);
            TextArea textArea = new TextArea(fileContent);
            newTab.setContent(textArea);
@@ -179,10 +181,35 @@ public class Controller {
  
  
    }
- 
+    /**
+     * Handler for "save" menu item
+     * When the "save" button is clicked, if file of the name of the tab exist in the current directory, it will
+     * overwrite the file with the content in the textbox of the current tab
+     *
+     * If that file didn't exist, it will call the save as menu item for the user to put in a new name
+     *
+     */
    @FXML
    private void handleSaveMenuItem() {
- 
+       // get the current tab
+       Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+
+       // get the name of the tab (file path)
+       String fileName = currentTab.getText();
+
+       File file = new File(fileName);
+
+       if (file.exists()) {
+           // get content of textarea
+           TextArea textBox = (TextArea) currentTab.getContent();
+           String content = textBox.getText();
+
+           // save the content of the current tab
+           SaveFile(content,file);
+       }
+       else {
+           handleSaveAsMenuItem();
+       }
  
  
    }
@@ -192,14 +219,16 @@ public class Controller {
      * a file name for the text file and if the file exist, the prompt will ask user whether to overwrite
      *
      * After file is created successfully, the user will see a prompt, and if not, the user will also see an error
-     * message
+     * message; At the same time, the tab name will be changed to the file path saved
      *
      * @Give credit to http://java-buddy.blogspot.com/
      */
    @FXML
    private void handleSaveAsMenuItem() {
+       // get the current tab
+       Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
        // get the current textBox
-       TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+       TextArea textBox = (TextArea) currentTab.getContent();
 
        // initiate a new file chooser
        FileChooser fileChooser = new FileChooser();
@@ -221,6 +250,8 @@ public class Controller {
                alert.setHeaderText(null);
                alert.setContentText("Successfully created " + file.getPath());
                alert.show();
+               // change the name of the tab to the file path
+               currentTab.setText(file.getPath());
            } else {
                alert = new Alert(AlertType.ERROR);
                alert.setTitle("Error");
