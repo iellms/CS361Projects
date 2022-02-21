@@ -1,3 +1,11 @@
+/*
+ * File: proj03EllmerLoverudeQian.Main.java
+ * Names: Ian Ellmer, Leo Qian, Jasper Loverude
+ * Class: CS361
+ * Project 3
+ * Date: 2/15/2022
+ */
+
 package proj03EllmerLoverudeQian;
 
 
@@ -7,7 +15,12 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-
+/**
+ * The Main Class for loading the fxml file and building the stage
+ *
+ *
+ * @author (Ian Ellmer, Leo Qian, Jasper Loverude)
+ */
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws java.io.IOException {

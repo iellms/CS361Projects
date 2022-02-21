@@ -1,3 +1,11 @@
+/*
+ * File: proj03EllmerLoverudeQian.Controller.java
+ * Names: Ian Ellmer, Leo Qian, Jasper Loverude
+ * Class: CS361
+ * Project 3
+ * Date: 2/15/2022
+ */
+
 package proj03EllmerLoverudeQian;
 
 
@@ -15,11 +23,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
 
-
+/**
+ * The Controller Class for handling menu items click events of the stage
+ *
+ * @author (Ian Ellmer, Leo Qian, Jasper Loverude)
+ */
 public class Controller {
-
-   // private ArrayList<Tab> tabList;
-
 
     @FXML
     private TabPane tabPane;
@@ -38,14 +47,6 @@ public class Controller {
 
     }
 
-    //this.selectionModel.select(0);
-
-
-        //this.tabList = new ArrayList<>();
-
-        //this.selectionModel = tabPane.getSelectionModel();
-
-    
     /** 
      *
      * Handler method for about menu bar item. When the about item of the
