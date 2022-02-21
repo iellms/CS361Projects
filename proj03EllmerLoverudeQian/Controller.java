@@ -228,7 +228,8 @@ public class Controller {
        if(changed) {
            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
            alert.setTitle(null);
-           alert.setContentText("Changes has been made, do you want to save it?");
+           alert.setContentText("Changes has been made to " + file.getPath() +
+                   "\ndo you want to save it?");
            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
            ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -240,7 +241,7 @@ public class Controller {
                } else if (type == noButton) {
                    tabPane.getTabs().remove(currentTab);
                } else {
-                    // do nothing
+                    // do nothing if cancel button is clicked
                }
            });
        }
@@ -355,13 +356,26 @@ public class Controller {
 
     /**
      * Handler method for exit menu bar item. When exit item of the menu
-     * bar is clicked, the window disappears and the application quits.
+     * bar is clicked, the window disappears and the application quits after going
+     * through each tab and ask user about the unsaved change.
+     *
+     * If the user clicked cancel at any point, the operation is stopped
      *
      * @param event An ActionEvent object that gives information about the event
      *              and its source.
     */
     @FXML
     private void handleExitMenuItem(ActionEvent event) {
+        while (tabPane.getSelectionModel().getSelectedItem() != null) {
+            Tab previousTab = tabPane.getSelectionModel().getSelectedItem();
+            handleCloseMenuItem();
+            Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+            // if the tab is not closed, stop the operation of this function
+            if(previousTab.equals(currentTab)) {
+                return;
+            }
+
+        }
         Platform.exit();
     }
 
