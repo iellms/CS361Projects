@@ -2,14 +2,12 @@ package proj03EllmerLoverudeQian;
 
 
 
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Optional;
 import java.io.File;
 import java.io.IOException;
-
-
 
 // import javafx.application.Application;
 import javafx.application.Platform;
@@ -24,10 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 // import javafx.scene.control.TextInputDialog;
 // import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
 public class Controller {
 
    // private ArrayList<Tab> tabList;
@@ -162,21 +157,18 @@ public class Controller {
 
        // if a valid file is selected
        if (selectedFile != null) {
+           // get the path of the file selected
            String filePath = selectedFile.getPath();
+           // read the content of the file to a string
            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
-
+           // generate a new tab and put the file content into the text area
            Tab newTab = new Tab();
-
            newTab.setText(getNextDefaultTitle());
-
            tabPane.getTabs().add(newTab);
-
            TextArea textArea = new TextArea(fileContent);
-
            newTab.setContent(textArea);
-
+           // select the new tab created
            SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-
            selectionModel.select(newTab);
        }
 
@@ -196,68 +188,70 @@ public class Controller {
    }
     /**
      * Handler for "save as" menu item
-     * When the "save as" button is clicked, a textInputDialog appears
-     * and asks the file name for the text file
+     * When the "save as" button is clicked, a save as window appears asking the user to enter
+     * a file name for the text file and if the file exist, the prompt will ask user whether to overwrite
      *
-     * If ok is clicked, it calls the createNewFile helper method and create a
-     * new text file if none exist in the current director
+     * After file is created successfully, the user will see a prompt, and if not, the user will also see an error
+     * message
+     *
+     * @Give credit to http://java-buddy.blogspot.com/
      */
    @FXML
    private void handleSaveAsMenuItem() {
-       // create a new text input dialog asking for filename
-       TextInputDialog saveAsDialog = new TextInputDialog();
-       saveAsDialog.setTitle("Save As");
-       saveAsDialog.setHeaderText("Name your new text file");
+       // get the current textBox
+       TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
 
-       Optional<String> result = saveAsDialog.showAndWait();
-       // if the user pressed ok create a new file in that name
-       if (result.isPresent()){
-            String fileName = saveAsDialog.getEditor().getText();
-            createNewFile(fileName);
+       // initiate a new file chooser
+       FileChooser fileChooser = new FileChooser();
+       fileChooser.setTitle("Save as");
+
+       //Set extension filter
+       FileChooser.ExtensionFilter extFilter =
+               new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+       fileChooser.getExtensionFilters().add(extFilter);
+
+       //Show save file dialog
+       File file = fileChooser.showSaveDialog(tabPane.getScene().getWindow());
+
+       if(file != null) {
+           Alert alert;
+           if (SaveFile(textBox.getText(), file)) {
+               alert = new Alert(AlertType.INFORMATION);
+               alert.setTitle("Success");
+               alert.setHeaderText(null);
+               alert.setContentText("Successfully created " + file.getPath());
+               alert.show();
+           } else {
+               alert = new Alert(AlertType.ERROR);
+               alert.setTitle("Error");
+               alert.setHeaderText(null);
+               alert.setContentText("Filed creating " + file.getPath());
+               alert.show();
+           }
        }
  
    }
 
     /**
      * Helper method for creating a new file
-     * It creates a newFile if none existed and throws error message if an error is encountered
-     * @param (fileName) (the name of the text file that is going to be created)
-     * <p>Bugs: Need to ask the user if the file name already exist; doesn't show exception dialog if
-     *                   file name is invalid
+     * @param (content) (the string content of the new file being created)
+     * @param (file) (the file variable passed by handleSaveAsMenuItem function indicating the
+     *               file the user want to save to is valid)
+     *
+     * @return returns true if file created successfully and false if error occurs
      */
-   private void createNewFile(String fileName){
-       File file = new File(fileName+".txt");
+    private boolean SaveFile(String content, File file){
+        try {
+            FileWriter fileWriter;
+            fileWriter = new FileWriter(file);
+            fileWriter.write(content);
+            fileWriter.close();
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
 
-       try {
-           // create a new file
-           boolean result = file.createNewFile();
-
-           // test if successfully created a new file
-           Alert alert;
-           if(result){
-               alert = new Alert(AlertType.INFORMATION);
-               alert.setTitle("Success");
-               alert.setHeaderText(null);
-               alert.setContentText("Successfully created "+fileName+".txt");
-
-           }
-           else{
-               alert = new Alert(AlertType.ERROR);
-               alert.setTitle("Error");
-               alert.setHeaderText(null);
-               alert.setContentText("Filed creating "+fileName+".txt");
-
-           }
-           alert.showAndWait();
-           // handle ioexception from createNewFile method
-       } catch (IOException e) {
-           Alert alert = new Alert(AlertType.ERROR);
-           alert.setTitle("Exception");
-           alert.setHeaderText(null);
-           alert.setContentText("Exception creating "+fileName+".txt"
-           + "\n"+e.getMessage());
-       }
-   }
+    }
 
     /**
      * Handler method for exit menu bar item. When exit item of the menu
