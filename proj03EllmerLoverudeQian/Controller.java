@@ -35,15 +35,13 @@ public class Controller {
     private TabPane tabPane;
 
 
-    // an array that represents whether "untitled-x" current is an open tab
-    private boolean[] untitledFileNameArray;
+    // an number that stores the next untitled number for "untitled-x"
+    private int untitledNumber;
 
 
     public Controller() {
 
-        this.untitledFileNameArray = new boolean[16];
-        Arrays.fill(this.untitledFileNameArray, false);
-        this.untitledFileNameArray[0] = true;
+        this.untitledNumber = 1;
 
     }
 
@@ -64,7 +62,7 @@ public class Controller {
 
         aboutDialogBox.setContentText(
                 "Authors: Ian Ellmer, Jasper Loverude, and Leo Qian"
-                        + "\nLast Modified: Feb 18, 2022");
+                        + "\nLast Modified: Feb 21, 2022");
 
         aboutDialogBox.show();
 
@@ -90,7 +88,7 @@ public class Controller {
             handleCloseMenuItem();
         });
 
-        newTab.setText(getNextDefaultTitle());
+        newTab.setText("Untitled-" + Integer.toString(untitledNumber++));
 
         tabPane.getTabs().add(newTab);
 
@@ -104,29 +102,6 @@ public class Controller {
 
     }
 
-    /**
-     * Helper function that returns the next available Untitled-x, based
-     * on the field untitledFileNameArray, which is an array of booleans.
-     *
-     * @returns String that is the next unused "Untitled-..."
-     */
-    private String getNextDefaultTitle() {
-
-        if (untitledFileNameArray[0] == false) return "Untitled";
-
-        for (int i = 1; i < untitledFileNameArray.length; i++) {
-
-            if (untitledFileNameArray[i] == false) {
-                untitledFileNameArray[i] = true;
-
-                return "Untitled-" + Integer.toString(i);
-
-            }
-        }
-
-        return null;
-
-    }
 
 
     /**
@@ -207,9 +182,9 @@ public class Controller {
             } catch (IOException e) {
                 changed = true;
             }
-        } else {
-            changed = true;
-        }
+        } else if (!currentContent.equals("")){
+                changed = true;
+            }
 
         // if it has been modified
         if (changed) {

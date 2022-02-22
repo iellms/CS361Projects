@@ -44,11 +44,9 @@
             </menus>
         </MenuBar>
         <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0"> 
-            <Tab text="test">
+            <Tab text="Untitled">
                 <TextArea fx:id="textBox"/> 
             </Tab> 
         </TabPane>
-          <!-- <Button fx:id="goodbyeButton" layoutX="63.0" layoutY="35.0" prefHeight="30.0" prefWidth="80.0" text="Goodbye" />
-          <Button fx:id="helloButton" layoutX="8.0" layoutY="35.0" prefHeight="30.0" prefWidth="50.0" text="Hello" /> -->
     </children>
 </AnchorPane>
