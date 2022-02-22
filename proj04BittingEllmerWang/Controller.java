@@ -59,8 +59,8 @@ public class Controller {
         aboutDialogBox.setHeaderText("About this Application");
 
         aboutDialogBox.setContentText(
-                "Authors: Ian Ellmer, Jasper Loverude, and Leo Qian"
-                        + "\nLast Modified: Feb 21, 2022");
+                "Authors: Caeleb Bitting, Ian Ellmer, and Baron Wang"
+                        + "\nLast Modified: Feb 22, 2022");
 
         aboutDialogBox.show();
 
