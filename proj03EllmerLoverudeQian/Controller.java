@@ -201,16 +201,18 @@ public class Controller {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     handleSaveMenuItem(event);
+                    // close the tab after the function executes
+                    tabPane.getTabs().remove(currentTab);
                 }
                 else if (type == cancelButton){
                     event.consume();
+
+                }
+                else {
+                    // close the tab after the function executes
+                    tabPane.getTabs().remove(currentTab);
                 }
             });
-        }
-        // if no changes have been made, the tab also closes
-        else {
-            System.out.println("GotHere");
-            tabPane.getTabs().remove(currentTab);
         }
 
     }
