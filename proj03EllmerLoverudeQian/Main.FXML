@@ -44,7 +44,7 @@
             </menus>
         </MenuBar>
         <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0"> 
-            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem">
+            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id = "Untitled">
                 <TextArea fx:id="textBox"/> 
             </Tab> 
         </TabPane>

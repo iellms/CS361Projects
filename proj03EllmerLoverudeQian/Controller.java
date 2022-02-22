@@ -87,7 +87,8 @@ public class Controller {
             handleCloseMenuItem(t);
         });
 
-        newTab.setText("Untitled-" + Integer.toString(untitledNumber++));
+        newTab.setText("Untitled-" + Integer.toString(untitledNumber));
+        newTab.setId("Untitled-" + Integer.toString(untitledNumber++));
 
         tabPane.getTabs().add(newTab);
 
@@ -143,6 +144,7 @@ public class Controller {
             // set the title of the tab
             String[] fileAncestors = filePath.split("/");
             currentTab.setText(fileAncestors[fileAncestors.length - 1]);
+            currentTab.setId(filePath);
         }
 
     }
@@ -166,7 +168,7 @@ public class Controller {
         TextArea textBox = (TextArea) currentTab.getContent();
         String currentContent = textBox.getText();
         // get the file associated with the current tab
-        File file = new File(currentTab.getText());
+        File file = new File(currentTab.getId());
 
         // check if changes has been made
         boolean changed = false;
@@ -226,7 +228,8 @@ public class Controller {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
 
         // get the name of the tab (file path)
-        String fileName = currentTab.getText();
+        String fileName = currentTab.getId();
+        System.out.println(fileName);
 
         File file = new File(fileName);
 
@@ -284,6 +287,7 @@ public class Controller {
                 // change the name of the tab to the file path
                 String[] fileAncestors = file.getPath().split("/");
                 currentTab.setText(fileAncestors[fileAncestors.length - 1]);
+                currentTab.setId(file.getPath());
             } else {
                 alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
