@@ -214,6 +214,10 @@ public class Controller {
                 }
             });
         }
+        else {
+            // close the tab after the function executes
+            tabPane.getTabs().remove(currentTab);
+        }
 
     }
 
