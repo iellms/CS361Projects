@@ -34,14 +34,7 @@ public class Controller {
 
 
     // an number that stores the next untitled number for "untitled-x"
-    private int untitledNumber;
-
-
-    public Controller() {
-
-        this.untitledNumber = 1;
-
-    }
+    private int untitledNumber = 1;
 
     /**
      * Handler method for about menu bar item. When the about item of the
@@ -107,7 +100,7 @@ public class Controller {
      * Handler for "open" menu item
      * When the "open" button is clicked, a fileChooserDialog appears,
      * and the user has to select a valid text file to proceed
-     * <p>
+     *
      * If a valid file is selected, the program reads the file's content as String
      * and that String is put as content of the textarea of the new tab created
      * <p>
@@ -200,15 +193,21 @@ public class Controller {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     handleSaveMenuItem(event);
+                    // close the tab after the function executes
+                    tabPane.getTabs().remove(currentTab);
                 }
                 else if (type == cancelButton){
                     event.consume();
+
+                }
+                else {
+                    // close the tab after the function executes
+                    tabPane.getTabs().remove(currentTab);
                 }
             });
         }
-        // if no changes have been made, the tab also closes
         else {
-            System.out.println("GotHere");
+            // close the tab after the function executes
             tabPane.getTabs().remove(currentTab);
         }
 
@@ -228,8 +227,6 @@ public class Controller {
 
         // get the name of the tab (file path)
         String fileName = currentTab.getId();
-        System.out.println(fileName);
-
         File file = new File(fileName);
 
         if (file.exists()) {
@@ -250,7 +247,6 @@ public class Controller {
      * Handler for "save as" menu item
      * When the "save as" button is clicked, a save as window appears asking the user to enter
      * a file name for the text file and if the file exist, the prompt will ask user whether to overwrite
-     * <p>
      * After file is created successfully, the user will see a prompt, and if not, the user will also see an error
      * message; At the same time, the tab name will be changed to the file path saved
      *
