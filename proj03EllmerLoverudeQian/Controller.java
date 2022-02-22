@@ -12,7 +12,6 @@ package proj03EllmerLoverudeQian;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
 
@@ -53,7 +52,7 @@ public class Controller {
      * @see Informational window about the application
      */
     @FXML
-    private void handleAboutMenuItem() {
+    private void handleAboutMenuItem(Event event) {
 
         Alert aboutDialogBox = new Alert(AlertType.INFORMATION);
 
@@ -79,13 +78,13 @@ public class Controller {
      * <bug>for default tab, the close request handler may not work</bug>
      */
     @FXML
-    private void handleNewMenuItem() {
+    private void handleNewMenuItem(Event event) {
 
         Tab newTab = new Tab();
 
         // trigger close menu item handler when tab is closed
         newTab.setOnCloseRequest((Event t) -> {
-            handleCloseMenuItem();
+            handleCloseMenuItem(t);
         });
 
         newTab.setText("Untitled-" + Integer.toString(untitledNumber++));
@@ -117,7 +116,7 @@ public class Controller {
      * @throws exception will be thrown when encountering issues with reading the files
      */
     @FXML
-    private void handleOpenMenuItem() throws IOException {
+    private void handleOpenMenuItem(Event event) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open your text file");
 
@@ -134,7 +133,7 @@ public class Controller {
             // read the content of the file to a string
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
             // generate a new tab and put the file content into the text area
-            handleNewMenuItem();
+            handleNewMenuItem(event);
             // get the current tab
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
             // get the current textBox
@@ -142,7 +141,8 @@ public class Controller {
             // set the content of the textBox
             textBox.setText(fileContent);
             // set the title of the tab
-            currentTab.setText(selectedFile.getPath());
+            String[] fileAncestors = filePath.split("/");
+            currentTab.setText(fileAncestors[fileAncestors.length - 1]);
         }
 
     }
@@ -158,7 +158,7 @@ public class Controller {
      * If no changes has been made, the tab also closes
      */
     @FXML
-    private void handleCloseMenuItem() {
+    private void handleCloseMenuItem(Event event) {
 
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
@@ -179,7 +179,7 @@ public class Controller {
                 if (!currentContent.equals(fileContent)) {
                     changed = true;
                 }
-            } catch (IOException e) {
+            } catch (IOException ex) {
                 changed = true;
             }
         } else if (!currentContent.equals("")){
@@ -198,17 +198,16 @@ public class Controller {
             alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
-                    handleSaveMenuItem();
-                    tabPane.getTabs().remove(currentTab);
-                } else if (type == noButton) {
-                    tabPane.getTabs().remove(currentTab);
-                } else {
-                    // do nothing if cancel button is clicked
+                    handleSaveMenuItem(event);
+                }
+                else if (type == cancelButton){
+                    event.consume();
                 }
             });
         }
         // if no changes have been made, the tab also closes
         else {
+            System.out.println("GotHere");
             tabPane.getTabs().remove(currentTab);
         }
 
@@ -222,7 +221,7 @@ public class Controller {
      * If that file didn't exist, it will call the save as menu item for the user to put in a new name
      */
     @FXML
-    private void handleSaveMenuItem() {
+    private void handleSaveMenuItem(Event event) {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
 
@@ -239,7 +238,7 @@ public class Controller {
             // save the content of the current tab
             SaveFile(content, file);
         } else {
-            handleSaveAsMenuItem();
+            handleSaveAsMenuItem(event);
         }
 
 
@@ -256,7 +255,7 @@ public class Controller {
      * @Give credit to http://java-buddy.blogspot.com/
      */
     @FXML
-    private void handleSaveAsMenuItem() {
+    private void handleSaveAsMenuItem(Event event) {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get the current textBox
@@ -283,12 +282,13 @@ public class Controller {
                 alert.setContentText("Successfully created " + file.getPath());
                 alert.show();
                 // change the name of the tab to the file path
-                currentTab.setText(file.getPath());
+                String[] fileAncestors = file.getPath().split("/");
+                currentTab.setText(fileAncestors[fileAncestors.length - 1]);
             } else {
                 alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Filed creating " + file.getPath());
+                alert.setContentText("Failed creating " + file.getPath());
                 alert.show();
             }
         }
@@ -327,10 +327,10 @@ public class Controller {
      *              and its source.
      */
     @FXML
-    private void handleExitMenuItem(ActionEvent event) {
+    private void handleExitMenuItem(Event event) {
         while (tabPane.getSelectionModel().getSelectedItem() != null) {
             Tab previousTab = tabPane.getSelectionModel().getSelectedItem();
-            handleCloseMenuItem();
+            handleCloseMenuItem(event);
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
             // if the tab is not closed, stop the operation of this function
             if (previousTab.equals(currentTab)) {
@@ -346,7 +346,7 @@ public class Controller {
      * Undo the previous textArea edition
      */
     @FXML
-    private void handleUndo() {
+    private void handleUndo(Event event) {
         // get the current tab selected
         TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
         // call the undo method
@@ -358,7 +358,7 @@ public class Controller {
      * Redo the previous textArea edition
      */
     @FXML
-    private void handleRedo() {
+    private void handleRedo(Event event) {
         // get the current tab selected
         TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
         // call the redo method
@@ -370,7 +370,7 @@ public class Controller {
      * Cut all the selected text in the textArea of the current Tab
      */
     @FXML
-    private void handleCut() {
+    private void handleCut(Event event) {
         // get the current tab selected
         TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
         // call the cut method
@@ -382,7 +382,7 @@ public class Controller {
      * Copy the selected text from the textArea of the current Tab to the clipboard
      */
     @FXML
-    private void handleCopy() {
+    private void handleCopy(Event event) {
         // get the current tab selected
         TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
         // call the copy method
@@ -394,7 +394,7 @@ public class Controller {
      * Paste text from the clipboard to the textArea of the current Tab
      */
     @FXML
-    private void handlePaste() {
+    private void handlePaste(Event event) {
         // get the current tab selected
         TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
         // call the paste method
@@ -406,7 +406,7 @@ public class Controller {
      * Select all the text in the textArea of the current Tab
      */
     @FXML
-    private void handleSelectAll() {
+    private void handleSelectAll(Event event) {
         // get the current tab selected
         TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
         // call the select all method
