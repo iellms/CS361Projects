@@ -32,27 +32,20 @@ public class Controller {
     @FXML
     private TabPane tabPane;
 
-
-    // an number that stores the next untitled number for "untitled-x"
+    // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
 
-
     public Controller() {
-
         this.untitledNumber = 1;
-
     }
 
     /**
      * Handler method for about menu bar item. When the about item of the
      * menu bar is clicked, an alert window appears displaying basic information
      * about the application.
-     *
-     * @see Informational window about the application
      */
     @FXML
-    private void handleAboutMenuItem(Event event) {
-
+    private void handleAboutMenuItem (Event event) {
         Alert aboutDialogBox = new Alert(AlertType.INFORMATION);
 
         aboutDialogBox.setTitle("About");
@@ -60,10 +53,9 @@ public class Controller {
 
         aboutDialogBox.setContentText(
                 "Authors: Caleb Bitting, Ian Ellmer, and Baron Wang"
-                        + "\nLast Modified: Feb 22, 2022");
+                        + "\nLast Modified: Feb 28, 2022");
 
         aboutDialogBox.show();
-
     }
 
     /**
@@ -78,7 +70,6 @@ public class Controller {
      */
     @FXML
     private void handleNewMenuItem(Event event) {
-
         Tab newTab = new Tab();
 
         // trigger close menu item handler when tab is closed
@@ -86,25 +77,18 @@ public class Controller {
             handleCloseMenuItem(t);
         });
 
-        newTab.setText("Untitled-" + Integer.toString(untitledNumber));
-        newTab.setId("Untitled-" + Integer.toString(untitledNumber++));
+        newTab.setText("Untitled-" + untitledNumber);
+        newTab.setId("Untitled-" + untitledNumber++);
+        newTab.setContent(new TextArea());
 
+        // add new tab and move selection to front
         tabPane.getTabs().add(newTab);
-
-        TextArea textArea = new TextArea();
-
-        newTab.setContent(textArea);
-
-        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-
-        selectionModel.select(newTab);
-
+        tabPane.getSelectionModel().select(newTab);
     }
 
 
-
     /**
-     * Handler for "open" menu item
+     * Handler for "open" menu item.
      * When the "open" button is clicked, a fileChooserDialog appears,
      * and the user has to select a valid text file to proceed
      * <p>
@@ -113,7 +97,7 @@ public class Controller {
      * <p>
      * The new tab will also be initiated with the path of the file opened
      *
-     * @throws exception will be thrown when encountering issues with reading the files
+     * @throws IOException thrown when encountering issues with reading the files
      */
     @FXML
     private void handleOpenMenuItem(Event event) throws IOException {
@@ -122,7 +106,7 @@ public class Controller {
 
         // restrict the file type to only text files
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt")
+                new FileChooser.ExtensionFilter("Text Files", "*.txt") // TODO: extend to other text files (.java, etc.)
         );
         File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
 
@@ -133,10 +117,9 @@ public class Controller {
             // read the content of the file to a string
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
             // generate a new tab and put the file content into the text area
-            handleNewMenuItem(event);
-            // get the current tab
-            Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+            handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
             // get the current textBox
+            Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
             TextArea textBox = (TextArea) currentTab.getContent();
             // set the content of the textBox
             textBox.setText(fileContent);
@@ -145,7 +128,6 @@ public class Controller {
             currentTab.setText(fileAncestors[fileAncestors.length - 1]);
             currentTab.setId(filePath);
         }
-
     }
 
     /**
@@ -171,9 +153,12 @@ public class Controller {
 
         // check if changes has been made
         boolean changed = false;
-        // check if the textarea has been modified
-        if (file.exists()) {
+        // check if the textArea has been modified
+        if (!currentContent.equals("")) {
+            changed = true;
+        } else if (file.exists()) {
             // check if the content of the file matches the content of the textarea
+            // TODO: update this with some more efficient way of checking
             try {
                 String fileContent = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 // if not it has been modified
@@ -183,9 +168,7 @@ public class Controller {
             } catch (IOException ex) {
                 changed = true;
             }
-        } else if (!currentContent.equals("")){
-                changed = true;
-            }
+        }
 
         // if it has been modified
         if (changed) {
@@ -208,10 +191,8 @@ public class Controller {
         }
         // if no changes have been made, the tab also closes
         else {
-            System.out.println("GotHere");
             tabPane.getTabs().remove(currentTab);
         }
-
     }
 
     /**
@@ -228,7 +209,6 @@ public class Controller {
 
         // get the name of the tab (file path)
         String fileName = currentTab.getId();
-        System.out.println(fileName);
 
         File file = new File(fileName);
 
@@ -242,8 +222,6 @@ public class Controller {
         } else {
             handleSaveAsMenuItem(event);
         }
-
-
     }
 
     /**
@@ -276,9 +254,8 @@ public class Controller {
         File file = fileChooser.showSaveDialog(tabPane.getScene().getWindow());
 
         if (file != null) {
-            Alert alert;
             if (SaveFile(textBox.getText(), file)) {
-                alert = new Alert(AlertType.INFORMATION);
+                Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
                 alert.setContentText("Successfully created " + file.getPath());
@@ -288,14 +265,13 @@ public class Controller {
                 currentTab.setText(fileAncestors[fileAncestors.length - 1]);
                 currentTab.setId(file.getPath());
             } else {
-                alert = new Alert(AlertType.ERROR);
+                Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
                 alert.setContentText("Failed creating " + file.getPath());
                 alert.show();
             }
         }
-
     }
 
     /**
@@ -308,8 +284,7 @@ public class Controller {
      */
     private boolean SaveFile(String content, File file) {
         try {
-            FileWriter fileWriter;
-            fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(content);
             fileWriter.close();
             return true;
@@ -339,7 +314,6 @@ public class Controller {
             if (previousTab.equals(currentTab)) {
                 return;
             }
-
         }
         Platform.exit();
     }
@@ -417,7 +391,4 @@ public class Controller {
     }
 
 
-    public static void main(String[] args) {
-
-    }
-}
+    public static void main(String[] args) { } }
