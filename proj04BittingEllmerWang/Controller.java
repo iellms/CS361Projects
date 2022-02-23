@@ -9,18 +9,18 @@
 package proj04BittingEllmerWang;
 
 
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.File;
-import java.io.IOException;
-
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * The Controller Class for handling menu items click events of the stage
@@ -39,13 +39,16 @@ public class Controller {
         this.untitledNumber = 1;
     }
 
+    public static void main(String[] args) {
+    }
+
     /**
      * Handler method for about menu bar item. When the about item of the
      * menu bar is clicked, an alert window appears displaying basic information
      * about the application.
      */
     @FXML
-    private void handleAboutMenuItem (Event event) {
+    private void handleAboutMenuItem(Event event) {
         Alert aboutDialogBox = new Alert(AlertType.INFORMATION);
 
         aboutDialogBox.setTitle("About");
@@ -83,7 +86,6 @@ public class Controller {
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().select(newTab);
     }
-
 
     /**
      * Handler for "open" menu item.
@@ -181,8 +183,7 @@ public class Controller {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     handleSaveMenuItem(event);
-                }
-                else if (type == cancelButton){
+                } else if (type == cancelButton) {
                     event.consume();
                 }
             });
@@ -387,6 +388,4 @@ public class Controller {
         // call the select all method
         textBox.selectAll();
     }
-
-
-    public static void main(String[] args) { } }
+}
