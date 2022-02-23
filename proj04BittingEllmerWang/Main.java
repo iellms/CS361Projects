@@ -30,20 +30,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        // Load fxml file
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("Project 3");
-        Scene scene = new Scene(root);
-
-        // Load css file
-        scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+        primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
         primaryStage.setScene(scene);
-
-        // Set the minimum height and width of th main stage
-        primaryStage.setMinHeight(250);
-        primaryStage.setMinWidth(300);
-
-        // Show the stage
         primaryStage.show();
 
     }

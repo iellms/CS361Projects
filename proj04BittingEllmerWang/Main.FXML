@@ -16,7 +16,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 
-<AnchorPane prefHeight="250.0" prefWidth="300.0"
+<AnchorPane prefHeight="250.0" prefWidth="300.0" stylesheets="@Main.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="proj04BittingEllmerWang.Controller">
     <children>
