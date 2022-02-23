@@ -11,18 +11,24 @@ package proj04BittingEllmerWang;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * The Main Class for loading the fxml file and building the stage
  *
  * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
  */
-public class Main extends Application{
+public class Main extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws java.io.IOException {
+    public void start(Stage primaryStage) throws IOException {
 
         // Load fxml file
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -40,9 +46,5 @@ public class Main extends Application{
         // Show the stage
         primaryStage.show();
 
-    }
-
-    public static void main(String[] args){
-        launch(args);
     }
 }

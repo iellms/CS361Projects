@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--* File: proj03EllmerLoverudeQian.Main.FXML-->
 <!--* Names: Caleb Bitting, Ian Ellmer, Baron Wang-->
 <!--* Class: CS361-->
 <!--* Project 4-->
 <!--* Date: 2/15/2022-->
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -14,24 +16,26 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 
-<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj04BittingEllmerWang.Controller">
+<AnchorPane prefHeight="250.0" prefWidth="300.0"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="proj04BittingEllmerWang.Controller">
     <children>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <menus>
                 <Menu text="File">
                     <items>
                         <MenuItem text="About..." onAction="#handleAboutMenuItem"/>
-                        <SeparatorMenuItem> </SeparatorMenuItem>
-                        <MenuItem text="New" onAction="#handleNewMenuItem" />
+                        <SeparatorMenuItem/>
+                        <MenuItem text="New" onAction="#handleNewMenuItem"/>
                         <MenuItem text="Open..." onAction="#handleOpenMenuItem"/>
                         <MenuItem text="Close" onAction="#handleCloseMenuItem"/>
                         <MenuItem text="Save" onAction="#handleSaveMenuItem"/>
                         <MenuItem text="Save as..." onAction="#handleSaveAsMenuItem"/>
-                        <SeparatorMenuItem> </SeparatorMenuItem>
+                        <SeparatorMenuItem/>
                         <MenuItem text="Exit" onAction="#handleExitMenuItem"/>
                     </items>
                 </Menu>
-                 <Menu text="Edit">
+                <Menu text="Edit">
                     <items>
                         <MenuItem text="Undo" onAction="#handleUndo"/>
                         <MenuItem text="Redo" onAction="#handleRedo"/>
@@ -43,10 +47,10 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0"> 
-            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id = "Untitled">
-                <TextArea fx:id="textBox"/> 
-            </Tab> 
+        <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0">
+            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id="Untitled">
+                <TextArea fx:id="textBox"/>
+            </Tab>
         </TabPane>
     </children>
 </AnchorPane>
