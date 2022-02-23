@@ -1,6 +1,6 @@
 /*
  * File: proj04BittingEllmerWant.Main.java
- * Names: Ian Ellmer, Leo Qian, Jasper Loverude
+ * Names: Caleb Bitting, Ian Ellmer, Baron Wang
  * Class: CS361
  * Project 3
  * Date: 2/15/2022
@@ -18,7 +18,7 @@ import javafx.scene.Scene;
 /**
  * The Main Class for loading the fxml file and building the stage
  *
- * @author (Caeleb Bitting, Ian Ellmer, Baron Wang)
+ * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
  */
 public class Main extends Application{
     @Override

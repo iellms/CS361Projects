@@ -1,6 +1,6 @@
 /*
  * File: proj04BittingEllmerWang.Controller.java
- * Names: Caeleb Bitting, Ian Ellmer, Baron Wang
+ * Names: Caleb Bitting, Ian Ellmer, Baron Wang
  * Class: CS361
  * Project 4
  * Date: 2/15/2022
@@ -25,7 +25,7 @@ import javafx.stage.FileChooser;
 /**
  * The Controller Class for handling menu items click events of the stage
  *
- * @author (Ian Ellmer, Leo Qian, Jasper Loverude)
+ * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
  */
 public class Controller {
 
@@ -59,7 +59,7 @@ public class Controller {
         aboutDialogBox.setHeaderText("About this Application");
 
         aboutDialogBox.setContentText(
-                "Authors: Caeleb Bitting, Ian Ellmer, and Baron Wang"
+                "Authors: Caleb Bitting, Ian Ellmer, and Baron Wang"
                         + "\nLast Modified: Feb 22, 2022");
 
         aboutDialogBox.show();
