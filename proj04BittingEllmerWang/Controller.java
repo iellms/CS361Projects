@@ -25,11 +25,7 @@ import javafx.stage.FileChooser;
 /**
  * The Controller Class for handling menu items click events of the stage
  *
-<<<<<<< HEAD
  * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
-=======
- * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
->>>>>>> 5ed85cd38606271f87aeb80e91a721809b35b5f6
  */
 public class Controller {
 
