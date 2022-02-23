@@ -60,7 +60,7 @@ public class Controller {
 
     /**
      * Handler method for about new bar item. When the new item of the
-     * menu bar is clicked, an new tab is opened with text area.
+     * menu bar is clicked, a new tab is opened with text area.
      * Calls helper function "getNextDefaultTitle", which returns a String like
      * "Untitled-1", or "Untitled-2", based on what is available.
      *
@@ -73,9 +73,7 @@ public class Controller {
         Tab newTab = new Tab();
 
         // trigger close menu item handler when tab is closed
-        newTab.setOnCloseRequest((Event t) -> {
-            handleCloseMenuItem(t);
-        });
+        newTab.setOnCloseRequest(this::handleCloseMenuItem);
 
         newTab.setText("Untitled-" + untitledNumber);
         newTab.setId("Untitled-" + untitledNumber++);
@@ -198,7 +196,7 @@ public class Controller {
     /**
      * Handler for "save" menu item
      * When the "save" button is clicked, if file of the name of the tab exist in the current directory, it will
-     * overwrite the file with the content in the textbox of the current tab
+     * overwrite the file with the content in the text box of the current tab
      * <p>
      * If that file didn't exist, it will call the save as menu item for the user to put in a new name
      */
@@ -231,8 +229,8 @@ public class Controller {
      * <p>
      * After file is created successfully, the user will see a prompt, and if not, the user will also see an error
      * message; At the same time, the tab name will be changed to the file path saved
-     *
-     * @Give credit to http://java-buddy.blogspot.com/
+     * <p>
+     * Modeled after the Keystore demonstrated at http://java-buddy.blogspot.com/
      */
     @FXML
     private void handleSaveAsMenuItem(Event event) {
