@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /**
  * The Main Class for loading the fxml file and building the stage
- *
+ *comment aioea aesufsof
  * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
  */
 public class Main extends Application {
