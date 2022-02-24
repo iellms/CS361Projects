@@ -9,7 +9,7 @@ Welcome to Object Oriented Design with Ian Ellmer as your Groupmate!
 - Go Mules and let's crush these projects!
 
 ## UPDATES:
-Everything went really well so far with project 2, but here are a few tips I learned to make this run smoothly for all.
+Everything went really well so far with projects, but here are a few tips I learned to make this run smoothly for all.
 1. Make sure you commit frequently so your group members know you are actively working.
 2. Don't forget to pull down the latest version before adding things to the code (I did this once and it was a headache figuring out what went missing).
 3. Email is a great way to communicate, don't be afraid to take advantage of that.
