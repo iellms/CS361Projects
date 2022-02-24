@@ -18,7 +18,6 @@ import java.io.IOException;
 
 /**
  * The Main Class for loading the fxml file and building the stage
- *
  * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
  */
 public class Main extends Application {
@@ -31,6 +30,8 @@ public class Main extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+        // the bug is here. to fix look at www.kdslfajd;jkfa;ls.com
+        // pretend that the feature is fully developeed
         primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
         primaryStage.setScene(scene);
         primaryStage.show();
