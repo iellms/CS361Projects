@@ -31,7 +31,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         // the bug is here. to fix look at www.kdslfajd;jkfa;ls.com
-        // added some changes
+        // pretend that the feature is fully developeed
         primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
         primaryStage.setScene(scene);
         primaryStage.show();
