@@ -1,8 +1,8 @@
 # To Do
 
 ### Integrate RichText
-* Add RichText
-* Add jar file
+* ~~Add RichText~~
+* ~~Add jar file~~
 * Implement Java Keywords
 * Replace Text areas
 
