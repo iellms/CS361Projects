@@ -1,5 +1,5 @@
 /*
- * File: proj04BittingEllmerWant.Main.java
+ * File: proj04BittingEllmerWang.Main.java
  * Names: Caleb Bitting, Ian Ellmer, Baron Wang
  * Class: CS361
  * Project 3
