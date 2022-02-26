@@ -304,7 +304,7 @@ public class Controller {
      *              and its source.
      */
     @FXML
-    private void handleExitMenuItem(Event event) {
+    public void handleExitMenuItem(Event event) {
         while (tabPane.getSelectionModel().getSelectedItem() != null) {
             Tab previousTab = tabPane.getSelectionModel().getSelectedItem();
             handleCloseMenuItem(event);
@@ -314,7 +314,7 @@ public class Controller {
                 return;
             }
         }
-        Platform.exit();
+        System.exit(0);
     }
 
     /**

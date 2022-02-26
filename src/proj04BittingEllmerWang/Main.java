@@ -10,9 +10,11 @@ package proj04BittingEllmerWang;
 
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -34,6 +36,7 @@ public class Main extends Application {
         primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
         primaryStage.setScene(scene);
         primaryStage.show();
+
 
     }
 }
