@@ -157,6 +157,14 @@ public class Controller {
             currentTab.setText(fileAncestors[fileAncestors.length - 1]);
             currentTab.setId(filePath);
         }
+
+        // re-enable the buttons when there are tabs
+        if (!tabPane.getTabs().isEmpty()) {
+            Close.setDisable(false);
+            Save.setDisable(false);
+            SaveAs.setDisable(false);
+            Edit.setDisable(false);
+        }
     }
 
     /**
@@ -179,25 +187,24 @@ public class Controller {
         String currentContent = textBox.getText();
         // get the file associated with the current tab
         File file = new File(currentTab.getId());
-
         // check if changes has been made
         boolean changed = false;
         // check if the textArea has been modified
-        if (!currentContent.equals("")) {
-            changed = true;
-        } else if (file.exists()) {
-            // check if the content of the file matches the content of the textarea
-            // TODO: update this with some more efficient way of checking
+
+        // check if the content of the file matches the content of the textarea
+        if (file.exists()) {
             try {
                 String fileContent = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 // if not it has been modified
                 if (!currentContent.equals(fileContent)) {
-                    System.out.println("File not the same as tab content");
                     changed = true;
                 }
             } catch (IOException ex) {
                 changed = true;
             }
+        }
+        else if (!currentContent.equals("")){
+            changed = true;
         }
 
         // if it has been modified
@@ -216,6 +223,9 @@ public class Controller {
                     tabPane.getTabs().remove(currentTab);
                 } else if (type == cancelButton) {
                     event.consume();
+                }
+                else {  // type == noButton
+                    tabPane.getTabs().remove(currentTab);
                 }
             });
         }
@@ -352,7 +362,7 @@ public class Controller {
      */
     @FXML
     public void handleExitMenuItem(Event event) {
-        while (!tabPane.getTabs().isEmpty()) { //refactored condition
+        while (!tabPane.getTabs().isEmpty()) {
             Tab previousTab = tabPane.getSelectionModel().getSelectedItem();
             handleCloseMenuItem(event);
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
