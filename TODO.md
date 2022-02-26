@@ -21,3 +21,4 @@
 ### General refactoring
 * MVC Pattern
 * Change the dirty detection
+* After *everything* is done, refactor based on suggestions from previous projects.
