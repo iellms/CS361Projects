@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import org.fxmisc.richtext.CodeArea ?>
 <?import org.fxmisc.flowless.VirtualizedScrollPane ?>
 
@@ -29,13 +30,37 @@
                     <items>
                         <MenuItem text="About..." onAction="#handleAboutMenuItem"/>
                         <SeparatorMenuItem/>
-                        <MenuItem text="New" onAction="#handleNewMenuItem"/>
-                        <MenuItem text="Open..." onAction="#handleOpenMenuItem"/>
-                        <MenuItem text="Close" fx:id="Close" onAction="#handleCloseMenuItem"/>
-                        <MenuItem text="Save" fx:id="Save" onAction="#handleSaveMenuItem"/>
-                        <MenuItem text="Save as..." fx:id="SaveAs" onAction="#handleSaveAsMenuItem"/>
+                        <MenuItem text="New" mnemonicParsing="true" onAction="#handleNewMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="N" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Open..." mnemonicParsing="true" onAction="#handleOpenMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="O" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Close" mnemonicParsing="true" fx:id="Close" onAction="#handleCloseMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Save" mnemonicParsing="true" fx:id="Save" onAction="#handleSaveMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="S" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Save as..." mnemonicParsing="true" fx:id="SaveAs" onAction="#handleSaveAsMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="S" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
                         <SeparatorMenuItem/>
-                        <MenuItem text="Exit" onAction="#handleExitMenuItem"/>
+                        <MenuItem text="Exit" mnemonicParsing="true" onAction="#handleExitMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
                     </items>
                 </Menu>
                 <Menu text="Edit" fx:id = "Edit">

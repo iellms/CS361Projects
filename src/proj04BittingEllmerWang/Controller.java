@@ -14,6 +14,8 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -53,6 +55,7 @@ public class Controller {
     }
 
     public static void main(String[] args) {
+
     }
 
     /**
@@ -105,10 +108,12 @@ public class Controller {
         tabPane.getSelectionModel().select(newTab);
 
         // re-enable the buttons when there are tabs
-        Close.setDisable(false);
-        Save.setDisable(false);
-        SaveAs.setDisable(false);
-        Edit.setDisable(false);
+        if (tabPane.getTabs().isEmpty()) {
+            Close.setDisable(false);
+            Save.setDisable(false);
+            SaveAs.setDisable(false);
+            Edit.setDisable(false);
+        }
     }
 
     /**
@@ -321,6 +326,7 @@ public class Controller {
             fileWriter.close();
             return true;
         } catch (IOException ex) {
+
             return false;
         }
 
