@@ -16,6 +16,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+
+
 import java.io.IOException;
 
 /**
@@ -36,7 +38,6 @@ public class Main extends Application {
         primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
         primaryStage.setScene(scene);
         primaryStage.show();
-
 
     }
 }

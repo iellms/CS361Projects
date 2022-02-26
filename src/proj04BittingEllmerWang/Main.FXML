@@ -15,12 +15,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
+<?import org.fxmisc.richtext.CodeArea ?>
+<?import org.fxmisc.flowless.VirtualizedScrollPane ?>
+
 
 <AnchorPane prefHeight="250.0" prefWidth="300.0" stylesheets="@Main.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="proj04BittingEllmerWang.Controller">
     <children>
-        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" prefHeight = "30">
             <menus>
                 <Menu text="File">
                     <items>
@@ -47,7 +50,8 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0">
+        <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" AnchorPane.leftAnchor = "0.0"
+                 AnchorPane.rightAnchor = "0.0" AnchorPane.topAnchor = "30.0">
             <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id="Untitled">
                 <TextArea fx:id="textBox"/>
             </Tab>
