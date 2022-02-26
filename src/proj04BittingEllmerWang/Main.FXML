@@ -4,7 +4,7 @@
 <!--* Names: Caleb Bitting, Ian Ellmer, Baron Wang-->
 <!--* Class: CS361-->
 <!--* Project 4-->
-<!--* Date: 2/15/2022-->
+<!--* Date: 2/28/2022-->
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
@@ -31,14 +31,14 @@
                         <SeparatorMenuItem/>
                         <MenuItem text="New" onAction="#handleNewMenuItem"/>
                         <MenuItem text="Open..." onAction="#handleOpenMenuItem"/>
-                        <MenuItem text="Close" onAction="#handleCloseMenuItem"/>
-                        <MenuItem text="Save" onAction="#handleSaveMenuItem"/>
-                        <MenuItem text="Save as..." onAction="#handleSaveAsMenuItem"/>
+                        <MenuItem text="Close" fx:id="Close" onAction="#handleCloseMenuItem"/>
+                        <MenuItem text="Save" fx:id="Save" onAction="#handleSaveMenuItem"/>
+                        <MenuItem text="Save as..." fx:id="SaveAs" onAction="#handleSaveAsMenuItem"/>
                         <SeparatorMenuItem/>
                         <MenuItem text="Exit" onAction="#handleExitMenuItem"/>
                     </items>
                 </Menu>
-                <Menu text="Edit">
+                <Menu text="Edit" fx:id = "Edit">
                     <items>
                         <MenuItem text="Undo" onAction="#handleUndo"/>
                         <MenuItem text="Redo" onAction="#handleRedo"/>
@@ -51,7 +51,7 @@
             </menus>
         </MenuBar>
         <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" AnchorPane.leftAnchor = "0.0"
-                 AnchorPane.rightAnchor = "0.0" AnchorPane.topAnchor = "30.0">
+                 AnchorPane.rightAnchor = "0.0" AnchorPane.topAnchor = "30.0" AnchorPane.bottomAnchor = "0.0">
             <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id="Untitled">
                 <TextArea fx:id="textBox"/>
             </Tab>

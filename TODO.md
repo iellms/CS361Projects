@@ -11,7 +11,7 @@
 * Add int in firebrick red
 
 ### Update functionality
-* Disable menu items when appropriate
+* ~~Disable menu items when appropriate~~
 * No throwing exceptions
 * Add keyboard shortcuts
 * Clicking the x on the tab closes

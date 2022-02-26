@@ -32,8 +32,21 @@ public class Controller {
     @FXML
     private TabPane tabPane;
 
+    @FXML
+    private MenuItem Close;
+
+    @FXML
+    private MenuItem Save;
+
+    @FXML
+    private MenuItem SaveAs;
+
+    @FXML
+    private Menu Edit;
+
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
+
 
     public Controller() {
         this.untitledNumber = 1;
@@ -70,10 +83,15 @@ public class Controller {
      * @see new tab and textarea
      *
      * <bug>for default tab, the close request handler may not work</bug>
+
      */
     @FXML
     private void handleNewMenuItem(Event event) {
+
+
+
         Tab newTab = new Tab();
+
 
         // trigger close menu item handler when tab is closed
         newTab.setOnCloseRequest(this::handleCloseMenuItem);
@@ -85,6 +103,12 @@ public class Controller {
         // add new tab and move selection to front
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().select(newTab);
+
+        // re-enable the buttons when there are tabs
+        Close.setDisable(false);
+        Save.setDisable(false);
+        SaveAs.setDisable(false);
+        Edit.setDisable(false);
     }
 
     /**
@@ -191,6 +215,15 @@ public class Controller {
         // if no changes have been made, the tab also closes
         else {
             tabPane.getTabs().remove(currentTab);
+        }
+
+        // checks if there's any tab to close; if not, disable buttons
+        if (tabPane.getTabs().isEmpty()){
+            Close.setDisable(true);
+            Save.setDisable(true);
+            SaveAs.setDisable(true);
+            Edit.setDisable(true);
+
         }
     }
 
