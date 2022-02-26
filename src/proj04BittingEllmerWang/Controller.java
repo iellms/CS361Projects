@@ -108,7 +108,7 @@ public class Controller {
         tabPane.getSelectionModel().select(newTab);
 
         // re-enable the buttons when there are tabs
-        if (tabPane.getTabs().isEmpty()) {
+        if (!tabPane.getTabs().isEmpty()) {
             Close.setDisable(false);
             Save.setDisable(false);
             SaveAs.setDisable(false);
@@ -192,6 +192,7 @@ public class Controller {
                 String fileContent = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 // if not it has been modified
                 if (!currentContent.equals(fileContent)) {
+                    System.out.println("File not the same as tab content");
                     changed = true;
                 }
             } catch (IOException ex) {
@@ -212,6 +213,7 @@ public class Controller {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     handleSaveMenuItem(event);
+                    tabPane.getTabs().remove(currentTab);
                 } else if (type == cancelButton) {
                     event.consume();
                 }
@@ -228,7 +230,6 @@ public class Controller {
             Save.setDisable(true);
             SaveAs.setDisable(true);
             Edit.setDisable(true);
-
         }
     }
 
@@ -326,7 +327,14 @@ public class Controller {
             fileWriter.close();
             return true;
         } catch (IOException ex) {
+            Alert failedToSaveAlert = new Alert(AlertType.ERROR);
+            failedToSaveAlert.setTitle("Failed to save file");
+            failedToSaveAlert.setHeaderText("IO Exception");
 
+            failedToSaveAlert.setContentText(
+                    "Error saving file.");
+
+            failedToSaveAlert.show();
             return false;
         }
 
@@ -344,7 +352,7 @@ public class Controller {
      */
     @FXML
     public void handleExitMenuItem(Event event) {
-        while (tabPane.getSelectionModel().getSelectedItem() != null) {
+        while (!tabPane.getTabs().isEmpty()) { //refactored condition
             Tab previousTab = tabPane.getSelectionModel().getSelectedItem();
             handleCloseMenuItem(event);
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
