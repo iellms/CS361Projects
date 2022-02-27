@@ -28,14 +28,19 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem text="About..." onAction="#handleAboutMenuItem"/>
+                        <MenuItem text="About..." onAction="#handleAboutMenuItem">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="A" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
                         <SeparatorMenuItem/>
                         <MenuItem text="New" mnemonicParsing="true" onAction="#handleNewMenuItem">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="N" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
-                        <MenuItem text="Open..." mnemonicParsing="true" onAction="#handleOpenMenuItem">
+                        <MenuItem text="Open..." mnemonicParsing="true" onAction="#handleOpenMenuItem" >
+                            <!-- easier way to do : accelerator = "" in tag -->
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="O" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
                             </accelerator>
@@ -80,7 +85,7 @@
             <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id="Untitled">
                 <VirtualizedScrollPane>
                     <content>
-                        <CodeArea/>
+                        <CodeArea fx:id="codeArea"/>
                     </content>
                 </VirtualizedScrollPane>
             </Tab>

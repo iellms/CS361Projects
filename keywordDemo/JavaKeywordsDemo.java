@@ -37,7 +37,7 @@ public class JavaKeywordsDemo extends Application {
             "new", "package", "private", "protected", "public",
             "return", "short", "static", "strictfp", "super",
             "switch", "synchronized", "this", "throw", "throws",
-            "transient", "try", "void", "volatile", "while"
+            "transient", "try", "var", "void", "volatile", "while"
     };
 
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
@@ -150,6 +150,7 @@ public class JavaKeywordsDemo extends Application {
         StyleSpansBuilder<Collection<String>> spansBuilder
                 = new StyleSpansBuilder<>();
         while (matcher.find()) {
+            // looking for any of the types we defined above; if matches, set the style string to the certain class
             String styleClass =
                     matcher.group("KEYWORD") != null ? "keyword" :
                             matcher.group("PAREN") != null ? "paren" :

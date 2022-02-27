@@ -62,6 +62,18 @@ public class Controller {
     }
 
     /**
+     * Helper method to disable/re-enable selected menu items Close, Save, SaveAs,
+     * and the entire Edit menu
+     * @param disable boolean: true is disable, false is re-enable
+     */
+    private void disableMenuItems(boolean disable){
+        Close.setDisable(disable);
+        Save.setDisable(disable);
+        SaveAs.setDisable(disable);
+        Edit.setDisable(disable);
+    }
+
+    /**
      * Handler method for about menu bar item. When the about item of the
      * menu bar is clicked, an alert window appears displaying basic information
      * about the application.
@@ -111,12 +123,8 @@ public class Controller {
         tabPane.getSelectionModel().select(newTab);
 
         // re-enable the buttons when there are tabs
-        if (!tabPane.getTabs().isEmpty()) {
-            Close.setDisable(false);
-            Save.setDisable(false);
-            SaveAs.setDisable(false);
-            Edit.setDisable(false);
-        }
+        disableMenuItems(false);
+
     }
 
     /**
@@ -149,12 +157,11 @@ public class Controller {
             String filePath = selectedFile.getPath();
 
             // check if the file has already been opened in tabPane.
-            for (Object tabObj : tabPane.getTabs().toArray()) {
-                Tab tab = (Tab) tabObj;
-                if (tab.getId().equals(filePath)){
+            for (Tab tab : tabPane.getTabs()) {
+                if (tab.getId().equals(filePath)) {
                     // if so, switch to existing tab.
                     SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-                    selectionModel.select(tab); // select by object
+                    selectionModel.select(tab); // select by tab
                     return;
                 }
             }
@@ -165,7 +172,7 @@ public class Controller {
             handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
             // get the current textBox
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-            CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+            CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane) currentTab.getContent()).getContent();
             // set the content of the codeBox
             codeBox.appendText(fileContent);
             // set the title of the tab
@@ -175,12 +182,7 @@ public class Controller {
         }
 
         // re-enable the buttons when there are tabs
-        if (!tabPane.getTabs().isEmpty()) {
-            Close.setDisable(false);
-            Save.setDisable(false);
-            SaveAs.setDisable(false);
-            Edit.setDisable(false);
-        }
+        disableMenuItems(false);
     }
 
     /**
@@ -250,12 +252,9 @@ public class Controller {
             tabPane.getTabs().remove(currentTab);
         }
 
-        // checks if there's any tab to close; if not, disable buttons
+        // checks if there's any tab to close; if not, disable menu items
         if (tabPane.getTabs().isEmpty()){
-            Close.setDisable(true);
-            Save.setDisable(true);
-            SaveAs.setDisable(true);
-            Edit.setDisable(true);
+            disableMenuItems(true);
         }
     }
 
@@ -377,7 +376,7 @@ public class Controller {
      *              and its source.
      */
     @FXML
-    protected void handleExitMenuItem(Event event) {
+    void handleExitMenuItem(Event event) {
         while (!tabPane.getTabs().isEmpty()) {
             Tab previousTab = tabPane.getSelectionModel().getSelectedItem();
             handleCloseMenuItem(event);
