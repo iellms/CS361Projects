@@ -139,10 +139,23 @@ public class Controller {
         );
         File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
 
+
         // if a valid file is selected
         if (selectedFile != null) {
             // get the path of the file selected
             String filePath = selectedFile.getPath();
+
+            // check if the file has already been opened in tabPane.
+            for (Object tabObj : tabPane.getTabs().toArray()) {
+                Tab tab = (Tab) tabObj;
+                if (tab.getId().equals(filePath)){
+                    // if so, switch to existing tab.
+                    SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+                    selectionModel.select(tab); //select by object
+                    return;
+                }
+            }
+
             // read the content of the file to a string
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
             // generate a new tab and put the file content into the text area
