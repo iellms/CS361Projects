@@ -16,8 +16,8 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.input.KeyCodeCombination?>
-<?import org.fxmisc.richtext.CodeArea ?>
 <?import org.fxmisc.flowless.VirtualizedScrollPane ?>
+<?import org.fxmisc.richtext.CodeArea ?>
 
 
 <AnchorPane prefHeight="250.0" prefWidth="300.0" stylesheets="@Main.css"
@@ -78,7 +78,11 @@
         <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" AnchorPane.leftAnchor = "0.0"
                  AnchorPane.rightAnchor = "0.0" AnchorPane.topAnchor = "30.0" AnchorPane.bottomAnchor = "0.0">
             <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id="Untitled">
-                <TextArea fx:id="textBox"/>
+                <VirtualizedScrollPane>
+                    <content>
+                        <CodeArea/>
+                    </content>
+                </VirtualizedScrollPane>
             </Tab>
         </TabPane>
     </children>

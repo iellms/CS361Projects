@@ -9,13 +9,11 @@
 package proj04BittingEllmerWang;
 
 
-import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
+
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -23,6 +21,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
+
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.model.StyledDocument;
 
 /**
  * The Controller Class for handling menu items click events of the stage
@@ -101,7 +104,7 @@ public class Controller {
 
         newTab.setText("Untitled-" + untitledNumber);
         newTab.setId("Untitled-" + untitledNumber++);
-        newTab.setContent(new TextArea());
+        newTab.setContent(new VirtualizedScrollPane(new CodeArea()));
 
         // add new tab and move selection to front
         tabPane.getTabs().add(newTab);
@@ -151,7 +154,7 @@ public class Controller {
                 if (tab.getId().equals(filePath)){
                     // if so, switch to existing tab.
                     SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-                    selectionModel.select(tab); //select by object
+                    selectionModel.select(tab); // select by object
                     return;
                 }
             }
@@ -162,9 +165,9 @@ public class Controller {
             handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
             // get the current textBox
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-            TextArea textBox = (TextArea) currentTab.getContent();
-            // set the content of the textBox
-            textBox.setText(fileContent);
+            CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+            // set the content of the codeBox
+            codeBox.appendText(fileContent);
             // set the title of the tab
             String[] fileAncestors = filePath.split("/");
             currentTab.setText(fileAncestors[fileAncestors.length - 1]);
@@ -196,8 +199,8 @@ public class Controller {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get content of textarea
-        TextArea textBox = (TextArea) currentTab.getContent();
-        String currentContent = textBox.getText();
+        CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+        String currentContent = codeBox.getText();
         // get the file associated with the current tab
         File file = new File(currentTab.getId());
         // check if changes has been made
@@ -275,8 +278,8 @@ public class Controller {
 
         if (file.exists()) {
             // get content of textarea
-            TextArea textBox = (TextArea) currentTab.getContent();
-            String content = textBox.getText();
+            CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+            String content = codeBox.getText();
 
             // save the content of the current tab
             SaveFile(content, file);
@@ -300,7 +303,7 @@ public class Controller {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get the current textBox
-        TextArea textBox = (TextArea) currentTab.getContent();
+        CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
 
         // initiate a new file chooser
         FileChooser fileChooser = new FileChooser();
@@ -315,7 +318,7 @@ public class Controller {
         File file = fileChooser.showSaveDialog(tabPane.getScene().getWindow());
 
         if (file != null) {
-            if (SaveFile(textBox.getText(), file)) {
+            if (SaveFile(codeBox.getText(), file)) {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);

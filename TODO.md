@@ -4,7 +4,7 @@
 * ~~Add RichText~~
 * ~~Add jar file~~
 * Implement Java Keywords
-* Replace Text areas
+* ~~Replace Text areas~~
 
 ### Change appearances
 * Make brackets and the like teal
