@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
 import javafx.stage.FileChooser;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -81,13 +83,14 @@ public class Controller {
     /**
      * Helper method to disable/re-enable selected menu items Close, Save, SaveAs,
      * and the entire Edit menu
-     * @param disable boolean: true is disable, false is re-enable
+     *
+     * @param clickable boolean: true is disable, false is re-enable
      */
-    private void disableMenuItems(boolean disable){
-        Close.setDisable(disable);
-        Save.setDisable(disable);
-        SaveAs.setDisable(disable);
-        Edit.setDisable(disable);
+    private void clickableMenuItems(boolean clickable) {
+        Close.setDisable(!clickable);
+        Save.setDisable(!clickable);
+        SaveAs.setDisable(!clickable);
+        Edit.setDisable(!clickable);
     }
 
     /**
@@ -118,7 +121,6 @@ public class Controller {
      * @see new tab and textarea
      *
      * <bug>for default tab, the close request handler may not work</bug>
-
      */
     @FXML
     private void handleNewMenuItem(Event event) {
@@ -141,7 +143,7 @@ public class Controller {
         tabPane.getSelectionModel().select(newTab);
 
         // re-enable the buttons when there are tabs
-        disableMenuItems(false);
+        clickableMenuItems(true);
 
     }
 
@@ -187,10 +189,10 @@ public class Controller {
             // read the content of the file to a string
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
             // generate a new tab and put the file content into the text area
-            handleNewMenuItem(event);
+            handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
             // get the current textBox
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-            CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane) currentTab.getContent()).getContent();
+            CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
             // set the content of the codeBox
             codeBox.appendText(fileContent);
             // set the title of the tab
@@ -200,7 +202,7 @@ public class Controller {
         }
 
         // re-enable the buttons when there are tabs
-        disableMenuItems(false);
+        clickableMenuItems(true);
     }
 
     /**
@@ -219,7 +221,7 @@ public class Controller {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get content of textarea
-        CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
         String currentContent = codeBox.getText();
         // get the file associated with the current tab
         File file = new File(currentTab.getId());
@@ -238,8 +240,7 @@ public class Controller {
             } catch (IOException ex) {
                 changed = true;
             }
-        }
-        else if (!currentContent.equals("")){
+        } else if (!currentContent.equals("")) {
             changed = true;
         }
 
@@ -259,8 +260,7 @@ public class Controller {
                     tabPane.getTabs().remove(currentTab);
                 } else if (type == cancelButton) {
                     event.consume();
-                }
-                else {  // type == noButton
+                } else {  // type == noButton
                     tabPane.getTabs().remove(currentTab);
                 }
             });
@@ -271,8 +271,8 @@ public class Controller {
         }
 
         // checks if there's any tab to close; if not, disable menu items
-        if (tabPane.getTabs().isEmpty()){
-            disableMenuItems(true);
+        if (tabPane.getTabs().isEmpty()) {
+            clickableMenuItems(false);
         }
     }
 
@@ -295,7 +295,7 @@ public class Controller {
 
         if (file.exists()) {
             // get content of textarea
-            CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+            CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
             String content = codeBox.getText();
 
             // save the content of the current tab
@@ -320,7 +320,7 @@ public class Controller {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get the current textBox
-        CodeArea codeBox = (CodeArea)((VirtualizedScrollPane) currentTab.getContent()).getContent();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
 
         // initiate a new file chooser
         FileChooser fileChooser = new FileChooser();
