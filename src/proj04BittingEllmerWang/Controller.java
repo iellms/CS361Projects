@@ -165,32 +165,43 @@ public class Controller {
 
         // if a valid file is selected
         if (selectedFile != null) {
-            // get the path of the file selected
-            String filePath = selectedFile.getPath();
+            try {
+                // get the path of the file selected
+                String filePath = selectedFile.getPath();
 
-            // check if the file has already been opened in tabPane.
-            for (Tab tab : tabPane.getTabs()) {
-                if (tab.getId().equals(filePath)) {
-                    // if so, switch to existing tab.
-                    SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-                    selectionModel.select(tab); // select by tab
-                    return;
+                // check if the file has already been opened in tabPane.
+                for (Tab tab : tabPane.getTabs()) {
+                    if (tab.getId().equals(filePath)) {
+                        // if so, switch to existing tab.
+                        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+                        selectionModel.select(tab); // select by tab
+                        return;
+                    }
                 }
-            }
 
-            // read the content of the file to a string
-            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
-            // generate a new tab and put the file content into the code area
-            handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
-            // get the current codeBox
-            Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-            CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
-            // set the content of the codeBox
-            codeBox.appendText(fileContent);
-            // set the title of the tab
-            String[] fileAncestors = filePath.split("/");
-            currentTab.setText(fileAncestors[fileAncestors.length - 1]);
-            currentTab.setId(filePath);
+                // read the content of the file to a string
+                String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
+                // generate a new tab and put the file content into the code area
+                handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
+                // get the current codeBox
+                Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+                CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
+                // set the content of the codeBox
+                codeBox.appendText(fileContent);
+                // set the title of the tab
+                String[] fileAncestors = filePath.split("/");
+                currentTab.setText(fileAncestors[fileAncestors.length - 1]);
+                currentTab.setId(filePath);
+            } catch (IOException e){
+                Alert failedToSaveAlert = new Alert(AlertType.ERROR);
+                failedToSaveAlert.setTitle("Failed to open file");
+                failedToSaveAlert.setHeaderText("IO Exception");
+
+                failedToSaveAlert.setContentText(
+                        "Error opening file.");
+
+                failedToSaveAlert.show();
+            }
         }
 
         // re-enable the buttons when there are tabs
