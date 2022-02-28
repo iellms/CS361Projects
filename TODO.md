@@ -7,8 +7,8 @@
 * ~~Replace Text areas~~
 
 ### Change appearances
-* Make brackets and the like teal
-* Add int in firebrick red
+* ~~Make brackets and the like teal~~
+* ~~Add int in firebrick red~~
 
 ### Update functionality
 * ~~Disable menu items when appropriate~~
