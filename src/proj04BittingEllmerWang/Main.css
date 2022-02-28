@@ -44,6 +44,17 @@
     -fx-fill: teal;
     -fx-font-weight: bold;
 }
+.semicolon {
+    -fx-font-weight: bold;
+}
+
+.string {
+    -fx-fill: blue;
+}
+
+.comment {
+    -fx-fill: cadetblue;
+}
 
 /* sets the line where the cursor is with a light blue background. Not an error */
 .paragraph-box:has-caret {
