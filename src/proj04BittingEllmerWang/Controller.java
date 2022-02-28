@@ -21,11 +21,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
+
 
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.model.StyledDocument;
+
 
 /**
  * The Controller Class for handling menu items click events of the stage
@@ -49,6 +49,9 @@ public class Controller {
     @FXML
     private Menu Edit;
 
+    @FXML
+    private CodeArea codeArea;
+
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
 
@@ -57,9 +60,23 @@ public class Controller {
         this.untitledNumber = 1;
     }
 
-    public static void main(String[] args) {
 
+    /*
+     * syntax highlighting code in progress
+     */
+
+    /**
+     * this method makes sure that the very first tab is properly highlighted
+     */
+    @FXML
+    public void initialize() {
+        JavaKeywordsAsyncDemo jkad = new JavaKeywordsAsyncDemo(codeArea);
     }
+
+
+    public static void main(String[] args) {
+    }
+
 
     /**
      * Helper method to disable/re-enable selected menu items Close, Save, SaveAs,
@@ -107,7 +124,6 @@ public class Controller {
     private void handleNewMenuItem(Event event) {
 
 
-
         Tab newTab = new Tab();
 
 
@@ -116,7 +132,9 @@ public class Controller {
 
         newTab.setText("Untitled-" + untitledNumber);
         newTab.setId("Untitled-" + untitledNumber++);
-        newTab.setContent(new VirtualizedScrollPane(new CodeArea()));
+        CodeArea codeArea = new CodeArea();
+        JavaKeywordsAsyncDemo jkad = new JavaKeywordsAsyncDemo(codeArea); // colorizing codeArea
+        newTab.setContent(new VirtualizedScrollPane(codeArea));
 
         // add new tab and move selection to front
         tabPane.getTabs().add(newTab);
@@ -169,7 +187,7 @@ public class Controller {
             // read the content of the file to a string
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
             // generate a new tab and put the file content into the text area
-            handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
+            handleNewMenuItem(event);
             // get the current textBox
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
             CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane) currentTab.getContent()).getContent();

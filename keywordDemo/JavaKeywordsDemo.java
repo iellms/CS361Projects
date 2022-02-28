@@ -17,6 +17,7 @@ import org.fxmisc.richtext.model.Paragraph;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.collection.ListModification;
+import proj04BittingEllmerWang.JavaKeywordsAsyncDemo;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -40,6 +41,7 @@ public class JavaKeywordsDemo extends Application {
             "transient", "try", "var", "void", "volatile", "while"
     };
 
+
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
     private static final String PAREN_PATTERN = "\\(|\\)";
     private static final String BRACE_PATTERN = "\\{|\\}";
@@ -48,6 +50,8 @@ public class JavaKeywordsDemo extends Application {
     private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
     private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/"   // for whole text processing (text blocks)
             + "|" + "/\\*[^\\v]*" + "|" + "^\\h*\\*([^\\v]*|/)";  // for visible paragraph processing (line by line)
+    private static final String INTEGER_PATTERN = "\\b(?<!\\.)([1-9]\\d*|0)(?!\\.)\\b";
+
 
     private static final Pattern PATTERN = Pattern.compile(
             "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
@@ -57,6 +61,7 @@ public class JavaKeywordsDemo extends Application {
                     + "|(?<SEMICOLON>" + SEMICOLON_PATTERN + ")"
                     + "|(?<STRING>" + STRING_PATTERN + ")"
                     + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+                    + "|(?<INTEGER>" + INTEGER_PATTERN + ")"
     );
 
     private static final String sampleCode = String.join("\n", new String[]{
@@ -159,6 +164,7 @@ public class JavaKeywordsDemo extends Application {
                                                     matcher.group("SEMICOLON") != null ? "semicolon" :
                                                             matcher.group("STRING") != null ? "string" :
                                                                     matcher.group("COMMENT") != null ? "comment" :
+                                                                            matcher.group("INTEGER") != null ? "integer" :
                                                                             null; /* never happens */
             assert styleClass != null;
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);

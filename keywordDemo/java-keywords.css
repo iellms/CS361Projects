@@ -6,11 +6,11 @@
     -fx-font-weight: bold;
 }
 .paren {
-    -fx-fill: firebrick;
+    -fx-fill: teal;
     -fx-font-weight: bold;
 }
 .bracket {
-    -fx-fill: darkgreen;
+    -fx-fill: teal;
     -fx-font-weight: bold;
 }
 .brace {
@@ -28,4 +28,9 @@
 /* sets the line where the cursor is with a light blue background. Not an error */
 .paragraph-box:has-caret {
     -fx-background-color: #f2f9fc;
+}
+
+.integer{
+    -fx-fill : firebrick;
+    -fx-font-weight: bold;
 }

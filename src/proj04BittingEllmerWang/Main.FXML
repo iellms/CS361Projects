@@ -30,7 +30,7 @@
                     <items>
                         <MenuItem text="About..." onAction="#handleAboutMenuItem">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="A" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" code="A" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                         <SeparatorMenuItem/>
@@ -40,7 +40,6 @@
                             </accelerator>
                         </MenuItem>
                         <MenuItem text="Open..." mnemonicParsing="true" onAction="#handleOpenMenuItem" >
-                            <!-- easier way to do : accelerator = "" in tag -->
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="O" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
                             </accelerator>
@@ -70,12 +69,12 @@
                 </Menu>
                 <Menu text="Edit" fx:id = "Edit">
                     <items>
-                        <MenuItem text="Undo" onAction="#handleUndo"/>
-                        <MenuItem text="Redo" onAction="#handleRedo"/>
-                        <MenuItem text="Cut" onAction="#handleCut"/>
-                        <MenuItem text="Copy" onAction="#handleCopy"/>
-                        <MenuItem text="Paste" onAction="#handlePaste"/>
-                        <MenuItem text="Select all" onAction="#handleSelectAll"/>
+                        <MenuItem text="Undo" accelerator="META+Z" onAction="#handleUndo"/>
+                        <MenuItem text="Redo" accelerator="META+Y" onAction="#handleRedo"/>
+                        <MenuItem text="Cut" accelerator="META+X" onAction="#handleCut"/>
+                        <MenuItem text="Copy" accelerator="META+C" onAction="#handleCopy"/>
+                        <MenuItem text="Paste" accelerator="META+V" onAction="#handlePaste"/>
+                        <MenuItem text="Select all" accelerator="META+A" onAction="#handleSelectAll"/>
                     </items>
                 </Menu>
             </menus>

@@ -3,7 +3,7 @@
 ### Integrate RichText
 * ~~Add RichText~~
 * ~~Add jar file~~
-* Implement Java Keywords
+* ~~Implement Java Keywords~~
 * ~~Replace Text areas~~
 
 ### Change appearances

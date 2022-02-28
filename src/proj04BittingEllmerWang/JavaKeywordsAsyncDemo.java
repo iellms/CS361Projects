@@ -1,4 +1,4 @@
-package keywordDemo;
+package proj04BittingEllmerWang;
 
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -21,6 +21,16 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * I adapted the JavaKeywordAsyncDemo into a
+ * full-on class in order to effectuate syntax highlighting.
+ *
+ * In Main.java, class call serves as a "colorizer" that
+ * will colorize the CodeArea instance passed into the constructor.
+ *
+ * @author baronwang
+ */
 public class JavaKeywordsAsyncDemo extends Application {
 
     private static final String[] KEYWORDS = new String[]{
@@ -33,14 +43,17 @@ public class JavaKeywordsAsyncDemo extends Application {
             "new", "package", "private", "protected", "public",
             "return", "short", "static", "strictfp", "super",
             "switch", "synchronized", "this", "throw", "throws",
-            "transient", "try", "void", "volatile", "while"
+            "transient", "try", "var", "void", "volatile", "while" // "var" keyword added to the list
     };
     private static final String PAREN_PATTERN = "\\(|\\)";
     private static final String BRACE_PATTERN = "\\{|\\}";
     private static final String BRACKET_PATTERN = "\\[|\\]";
-    private static final String SEMICOLON_PATTERN = "\\;";
     private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
-    private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
+    private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/"   // for whole text processing (text blocks)
+            + "|" + "/\\*[^\\v]*" + "|" + "^\\h*\\*([^\\v]*|/)";  // for visible paragraph processing (line by line)
+    // new INTEGER_PATTERN that looks around for decimal point.
+    // Inspired from Wiktor Stribiżew's answer on StackOverflow
+    private static final String INTEGER_PATTERN = "\\b(?<!\\.)([1-9]\\d*|0)(?!\\.)\\b";
 
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
     private static final Pattern PATTERN = Pattern.compile(
@@ -48,35 +61,44 @@ public class JavaKeywordsAsyncDemo extends Application {
                     + "|(?<PAREN>" + PAREN_PATTERN + ")"
                     + "|(?<BRACE>" + BRACE_PATTERN + ")"
                     + "|(?<BRACKET>" + BRACKET_PATTERN + ")"
-                    + "|(?<SEMICOLON>" + SEMICOLON_PATTERN + ")"
                     + "|(?<STRING>" + STRING_PATTERN + ")"
                     + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+                    + "|(?<INTEGER>" + INTEGER_PATTERN + ")"
     );
 
-    private static final String sampleCode = String.join("\n", new String[]{
-            "package com.example;",
-            "",
-            "import java.util.*;",
-            "",
-            "public class Foo extends Bar implements Baz {",
-            "",
-            "    /*",
-            "     * multi-line comment",
-            "     */",
-            "    public static void main(String[] args) {",
-            "        // single-line comment",
-            "        for(String arg: args) {",
-            "            if(arg.length() != 0)",
-            "                System.out.println(arg);",
-            "            else",
-            "                System.err.println(\"Warning: empty string as argument\");",
-            "        }",
-            "    }",
-            "",
-            "}"
-    });
     private CodeArea codeArea;
     private ExecutorService executor;
+
+    /**
+     * Constructor for JavaKeywordAsyncDemo.
+     *
+     * The most important thing it does is make
+     * a Subscription and invoke
+     * computeHighlightingAsync method
+     * on the code area.
+     *
+     * @param codeArea code area to be colored
+     */
+    public JavaKeywordsAsyncDemo(CodeArea codeArea){
+        this.codeArea = codeArea;
+
+        executor = Executors.newSingleThreadExecutor();
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        Subscription cleanupWhenDone = codeArea.multiPlainChanges()
+                .successionEnds(Duration.ofMillis(500))
+                .retainLatestUntilLater(executor)
+                .supplyTask(this::computeHighlightingAsync)
+                .awaitLatest(codeArea.multiPlainChanges())
+                .filterMap(t -> {
+                    if (t.isSuccess()) {
+                        return Optional.of(t.get());
+                    } else {
+                        t.getFailure().printStackTrace();
+                        return Optional.empty();
+                    }
+                })
+                .subscribe(this::applyHighlighting);
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -93,10 +115,10 @@ public class JavaKeywordsAsyncDemo extends Application {
                             matcher.group("PAREN") != null ? "paren" :
                                     matcher.group("BRACE") != null ? "brace" :
                                             matcher.group("BRACKET") != null ? "bracket" :
-                                                    matcher.group("SEMICOLON") != null ? "semicolon" :
-                                                            matcher.group("STRING") != null ? "string" :
-                                                                    matcher.group("COMMENT") != null ? "comment" :
-                                                                            null; /* never happens */
+                                                    matcher.group("STRING") != null ? "string" :
+                                                            matcher.group("COMMENT") != null ? "comment" :
+                                                                matcher.group("INTEGER") != null ? "integer" :
+                                                                        null; /* never happens */
             assert styleClass != null;
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
@@ -106,35 +128,10 @@ public class JavaKeywordsAsyncDemo extends Application {
         return spansBuilder.create();
     }
 
+    // Empty start method needs to stay because otherwise the class won't work
     @Override
-    public void start(Stage primaryStage) {
-        executor = Executors.newSingleThreadExecutor();
-        codeArea = new CodeArea();
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-        Subscription cleanupWhenDone = codeArea.multiPlainChanges()
-                .successionEnds(Duration.ofMillis(500))
-                .retainLatestUntilLater(executor)
-                .supplyTask(this::computeHighlightingAsync)
-                .awaitLatest(codeArea.multiPlainChanges())
-                .filterMap(t -> {
-                    if (t.isSuccess()) {
-                        return Optional.of(t.get());
-                    } else {
-                        t.getFailure().printStackTrace();
-                        return Optional.empty();
-                    }
-                })
-                .subscribe(this::applyHighlighting);
+    public void start(Stage primaryStage) throws Exception {
 
-        // call when no longer need it: `cleanupWhenFinished.unsubscribe();`
-
-        codeArea.replaceText(0, 0, sampleCode);
-
-        Scene scene = new Scene(new StackPane(new VirtualizedScrollPane<>(codeArea)), 600, 400);
-        scene.getStylesheets().add(JavaKeywordsAsyncDemo.class.getResource("java-keywords.css").toExternalForm());
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Java Keywords Async Demo");
-        primaryStage.show();
     }
 
     @Override
