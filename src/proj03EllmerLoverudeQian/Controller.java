@@ -65,7 +65,7 @@ public class Controller {
      * Calls helper function "getNextDefaultTitle", which returns a String like
      * "Untitled-1", or "Untitled-2", based on what is available.
      *
-     * @see new tab and textarea
+     * @see new tab and codeArea in virtualized scroll pane
      *
      * <bug>for default tab, the close request handler may not work</bug>
      */
