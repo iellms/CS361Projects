@@ -1,11 +1,16 @@
+/*
+ * File: JavaKeywordAsyncDemo.java
+ * Names: Baron Wang, Caleb Bitting, Ian Ellmer
+ * Class: CS 361
+ * Project 4
+ * Date: February 28
+ */
+
 package proj04BittingEllmerWang;
 
 import javafx.application.Application;
 import javafx.concurrent.Task;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
@@ -23,13 +28,15 @@ import java.util.regex.Pattern;
 
 /**
  *
- * I adapted the JavaKeywordAsyncDemo into a
- * full-on class in order to effectuate syntax highlighting.
+ * The JavaKeywordAsyncDemo (JKAD) class
+ * from the Git repois made into a helper
+ * class to effectuate syntax highlighting.
  *
- * In Main.java, class call serves as a "colorizer" that
- * will colorize the CodeArea instance passed into the constructor.
+ * In Main.java, a JKAD call serves as a "colorizer" that
+ * will enable syntax coloring of the CodeArea instance
+ * passed into the constructor.
  *
- * @author baronwang
+ * @author Baron Wang
  */
 public class JavaKeywordsAsyncDemo extends Application {
 
@@ -75,7 +82,8 @@ public class JavaKeywordsAsyncDemo extends Application {
      * The most important thing it does is make
      * a Subscription and invoke
      * computeHighlightingAsync method
-     * on the code area.
+     * on the code area. It enables syntax
+     * coloring of the code area.
      *
      * @param codeArea code area to be colored
      */

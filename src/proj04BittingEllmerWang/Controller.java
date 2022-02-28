@@ -3,7 +3,7 @@
  * Names: Caleb Bitting, Ian Ellmer, Baron Wang
  * Class: CS361
  * Project 4
- * Date: 2/15/2022
+ * Date: 2/28/2022
  */
 
 package proj04BittingEllmerWang;
@@ -13,7 +13,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-
 import javafx.stage.FileChooser;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
@@ -23,10 +22,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-
-import org.fxmisc.flowless.VirtualizedScrollPane;
-import org.fxmisc.richtext.CodeArea;
 
 
 /**
@@ -63,12 +58,8 @@ public class Controller {
     }
 
 
-    /*
-     * syntax highlighting code in progress
-     */
-
     /**
-     * this method makes sure that the very first tab is properly highlighted
+     * this initializer makes sure that the very first tab is properly highlighted
      */
     @FXML
     public void initialize() {
@@ -114,11 +105,11 @@ public class Controller {
 
     /**
      * Handler method for about new bar item. When the new item of the
-     * menu bar is clicked, a new tab is opened with text area.
+     * menu bar is clicked, a new tab is opened with code area.
      * Calls helper function "getNextDefaultTitle", which returns a String like
      * "Untitled-1", or "Untitled-2", based on what is available.
      *
-     * @see new tab and textarea
+     * @see new tab and codearea
      *
      * <bug>for default tab, the close request handler may not work</bug>
      */
@@ -136,6 +127,7 @@ public class Controller {
         newTab.setId("Untitled-" + untitledNumber++);
         CodeArea codeArea = new CodeArea();
         JavaKeywordsAsyncDemo jkad = new JavaKeywordsAsyncDemo(codeArea); // colorizing codeArea
+        codeArea.setWrapText(true); // enabling all new tabs to wrap text
         newTab.setContent(new VirtualizedScrollPane(codeArea));
 
         // add new tab and move selection to front
@@ -153,7 +145,7 @@ public class Controller {
      * and the user has to select a valid text file to proceed
      * <p>
      * If a valid file is selected, the program reads the file's content as String
-     * and that String is put as content of the textarea of the new tab created
+     * and that String is put as content of the codearea of the new tab created
      * <p>
      * The new tab will also be initiated with the path of the file opened
      *
@@ -188,9 +180,9 @@ public class Controller {
 
             // read the content of the file to a string
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
-            // generate a new tab and put the file content into the text area
+            // generate a new tab and put the file content into the code area
             handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
-            // get the current textBox
+            // get the current codeBox
             Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
             CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
             // set the content of the codeBox
@@ -220,16 +212,16 @@ public class Controller {
 
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        // get content of textarea
+        // get content of code area
         CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
         String currentContent = codeBox.getText();
         // get the file associated with the current tab
         File file = new File(currentTab.getId());
         // check if changes has been made
         boolean changed = false;
-        // check if the textArea has been modified
+        // check if the codeArea has been modified
 
-        // check if the content of the file matches the content of the textarea
+        // check if the content of the file matches the content of the codeArea
         if (file.exists()) {
             try {
                 String fileContent = new String(Files.readAllBytes(Paths.get(file.getPath())));
@@ -279,7 +271,7 @@ public class Controller {
     /**
      * Handler for "save" menu item
      * When the "save" button is clicked, if file of the name of the tab exist in the current directory, it will
-     * overwrite the file with the content in the text box of the current tab
+     * overwrite the file with the content in the code box of the current tab
      * <p>
      * If that file didn't exist, it will call the save as menu item for the user to put in a new name
      */
@@ -294,7 +286,7 @@ public class Controller {
         File file = new File(fileName);
 
         if (file.exists()) {
-            // get content of textarea
+            // get content of codearea
             CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
             String content = codeBox.getText();
 
@@ -319,7 +311,7 @@ public class Controller {
     private void handleSaveAsMenuItem(Event event) {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        // get the current textBox
+        // get the current codeBox
         CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
 
         // initiate a new file chooser
@@ -409,73 +401,74 @@ public class Controller {
 
     /**
      * Handler method for "Undo" in the Edit menu
-     * Undo the previous textArea edition
+     * Undo the previous codeArea edition
      */
     @FXML
     private void handleUndo(Event event) {
         // get the current tab selected
-        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
+                .getSelectedItem().getContent()).getContent();
         // call the undo method
-        textBox.undo();
+        codeBox.undo();
     }
 
     /**
      * Handler method for "Redo" in the Edit menu
-     * Redo the previous textArea edition
+     * Redo the previous codeArea edition
      */
     @FXML
     private void handleRedo(Event event) {
         // get the current tab selected
-        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
-        // call the redo method
-        textBox.redo();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
+                .getSelectedItem().getContent()).getContent();        // call the redo method
+        codeBox.redo();
     }
 
     /**
      * Handler method for "Cut" in the Edit menu
-     * Cut all the selected text in the textArea of the current Tab
+     * Cut all the selected text in the codeArea of the current Tab
      */
     @FXML
     private void handleCut(Event event) {
         // get the current tab selected
-        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
-        // call the cut method
-        textBox.cut();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
+                .getSelectedItem().getContent()).getContent();        // call the cut method
+        codeBox.cut();
     }
 
     /**
      * Handler method for "Copy" in the Edit menu
-     * Copy the selected text from the textArea of the current Tab to the clipboard
+     * Copy the selected text from the codeArea of the current Tab to the clipboard
      */
     @FXML
     private void handleCopy(Event event) {
         // get the current tab selected
-        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
-        // call the copy method
-        textBox.copy();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
+                .getSelectedItem().getContent()).getContent();        // call the copy method
+        codeBox.copy();
     }
 
     /**
      * Handler method for "Paste" in the Edit menu
-     * Paste text from the clipboard to the textArea of the current Tab
+     * Paste text from the clipboard to the codeArea of the current Tab
      */
     @FXML
     private void handlePaste(Event event) {
         // get the current tab selected
-        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
-        // call the paste method
-        textBox.paste();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
+                .getSelectedItem().getContent()).getContent();        // call the paste method
+        codeBox.paste();
     }
 
     /**
      * Handler method for "Select all" in the Edit menu
-     * Select all the text in the textArea of the current Tab
+     * Select all the text in the codeArea of the current Tab
      */
     @FXML
     private void handleSelectAll(Event event) {
         // get the current tab selected
-        TextArea textBox = (TextArea) tabPane.getSelectionModel().getSelectedItem().getContent();
-        // call the select all method
-        textBox.selectAll();
+        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
+                .getSelectedItem().getContent()).getContent();        // call the select all method
+        codeBox.selectAll();
     }
 }
