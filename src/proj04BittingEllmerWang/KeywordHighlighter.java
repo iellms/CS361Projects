@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  *
  * @author Baron Wang
  */
-public class JavaKeywordsAsyncDemo extends Application {
+public class KeywordHighlighter extends Application {
 
     private static final String[] KEYWORDS = new String[]{
             "abstract", "assert", "boolean", "break", "byte",
@@ -50,21 +50,21 @@ public class JavaKeywordsAsyncDemo extends Application {
             "new", "package", "private", "protected", "public",
             "return", "short", "static", "strictfp", "super",
             "switch", "synchronized", "this", "throw", "throws",
-            "transient", "try", "var", "void", "volatile", "while" // "var" keyword added to the list
+            "transient", "try", "var", "void", "volatile", "while"
     };
-    private static final String PAREN_PATTERN = "\\(|\\)";
-    private static final String BRACE_PATTERN = "\\{|\\}";
-    private static final String BRACKET_PATTERN = "\\[|\\]";
+    private static final String PAREN_PATTERN = "[()]";
+    private static final String BRACE_PATTERN = "[{}]";
+    private static final String BRACKET_PATTERN = "[\\[\\]]";
     private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
-    private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/"   // for whole text processing (text blocks)
+    private static final String COMMENT_PATTERN =
+            "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/"   // for text block processing
             + "|" + "/\\*[^\\v]*" + "|" + "^\\h*\\*([^\\v]*|/)";  // for visible paragraph processing (line by line)
     // new INTEGER_PATTERN that looks around for decimal point.
     // Inspired from Wiktor Stribiżew's answer on StackOverflow
     private static final String INTEGER_PATTERN = "\\b(?<!\\.)([1-9]\\d*|0)(?!\\.)\\b";
-
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
     private static final Pattern PATTERN = Pattern.compile(
-            "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
+                      "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
                     + "|(?<PAREN>" + PAREN_PATTERN + ")"
                     + "|(?<BRACE>" + BRACE_PATTERN + ")"
                     + "|(?<BRACKET>" + BRACKET_PATTERN + ")"
@@ -73,21 +73,16 @@ public class JavaKeywordsAsyncDemo extends Application {
                     + "|(?<INTEGER>" + INTEGER_PATTERN + ")"
     );
 
-    private CodeArea codeArea;
-    private ExecutorService executor;
+    private final CodeArea codeArea;
+    private final ExecutorService executor;
 
     /**
-     * Constructor for JavaKeywordAsyncDemo.
-     *
-     * The most important thing it does is make
-     * a Subscription and invoke
-     * computeHighlightingAsync method
-     * on the code area. It enables syntax
-     * coloring of the code area.
+     * Constructor for KeywordHighlighter. Makes a Subscription
+     * and invokes the computeHighlightingAsync method on the code area.
      *
      * @param codeArea code area to be colored
      */
-    public JavaKeywordsAsyncDemo(CodeArea codeArea){
+    public KeywordHighlighter(CodeArea codeArea){
         this.codeArea = codeArea;
 
         executor = Executors.newSingleThreadExecutor();
@@ -112,21 +107,31 @@ public class JavaKeywordsAsyncDemo extends Application {
         launch(args);
     }
 
+    // Empty start method needs to stay because otherwise the class won't work
+    @Override
+    public void start(Stage primaryStage) {}
+
+    @Override
+    public void stop() {
+        executor.shutdown();
+    }
+
     private static StyleSpans<Collection<String>> computeHighlighting(String text) {
         Matcher matcher = PATTERN.matcher(text);
-        int lastKwEnd = 0;
+        int lastKwEnd = 0; //TODO: find a better variable name
         StyleSpansBuilder<Collection<String>> spansBuilder
                 = new StyleSpansBuilder<>();
         while (matcher.find()) {
             String styleClass =
                     matcher.group("KEYWORD") != null ? "keyword" :
-                            matcher.group("PAREN") != null ? "paren" :
-                                    matcher.group("BRACE") != null ? "brace" :
-                                            matcher.group("BRACKET") != null ? "bracket" :
-                                                    matcher.group("STRING") != null ? "string" :
-                                                            matcher.group("COMMENT") != null ? "comment" :
-                                                                matcher.group("INTEGER") != null ? "integer" :
-                                                                        null; /* never happens */
+                    matcher.group("PAREN") != null ? "paren" :
+                    matcher.group("BRACE") != null ? "brace" :
+                    matcher.group("BRACKET") != null ? "bracket" :
+                    matcher.group("STRING") != null ? "string" :
+                    matcher.group("COMMENT") != null ? "comment" :
+                    matcher.group("INTEGER") != null ? "integer" :
+                    null; // should never happen
+
             assert styleClass != null;
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
@@ -136,22 +141,12 @@ public class JavaKeywordsAsyncDemo extends Application {
         return spansBuilder.create();
     }
 
-    // Empty start method needs to stay because otherwise the class won't work
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
-    }
-
-    @Override
-    public void stop() {
-        executor.shutdown();
-    }
 
     private Task<StyleSpans<Collection<String>>> computeHighlightingAsync() {
         String text = codeArea.getText();
-        Task<StyleSpans<Collection<String>>> task = new Task<StyleSpans<Collection<String>>>() {
+        Task<StyleSpans<Collection<String>>> task = new Task<>() {
             @Override
-            protected StyleSpans<Collection<String>> call() throws Exception {
+            protected StyleSpans<Collection<String>> call() {
                 return computeHighlighting(text);
             }
         };
