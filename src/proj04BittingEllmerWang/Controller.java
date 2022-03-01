@@ -47,12 +47,12 @@ public class Controller {
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
 
-    // a hasmmap that stores what file locations for tabnames
-    private HashMap<String,String> fileLocation;
+    // a hashmap that stores what file locations for tabnames
+    private final HashMap<String,String> fileLocation;
 
     public Controller() {
         this.untitledNumber = 1;
-        this.fileLocation = new HashMap<String,String>();
+        this.fileLocation = new HashMap<>();
         fileLocation.put("Untitled", null);
     }
 
@@ -85,6 +85,8 @@ public class Controller {
      * Handler method for about menu bar item. When the about item of the
      * menu bar is clicked, an alert window appears displaying basic information
      * about the application.
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleAboutMenuItem(Event event) {
@@ -106,6 +108,7 @@ public class Controller {
      * Calls helper function "getNextDefaultTitle", which returns a String like
      * "Untitled-1", or "Untitled-2", based on what is available.
      *
+     * @param event gives information about the event and its source.
      * @see new tab and codearea
      */
     @FXML
@@ -139,6 +142,8 @@ public class Controller {
      * and that String is put as content of the codearea of the new tab created
      * <p>
      * The new tab will also be initiated with the path of the file opened
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleOpenMenuItem(Event event) {
@@ -208,6 +213,8 @@ public class Controller {
      * After the user makes selection the tab is closed
      * <p>
      * If no changes has been made, the tab also closes
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleCloseMenuItem(Event event) {
@@ -280,6 +287,8 @@ public class Controller {
      * <p>
      * If that file didn't exist, it will call the save as menu item for the user to put
      * in a new name
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleSaveMenuItem(Event event) {
@@ -315,6 +324,8 @@ public class Controller {
      * to the file path saved.
      * <p>
      * Modeled after the Keystore demonstrated at http://java-buddy.blogspot.com/
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleSaveAsMenuItem(Event event) {
@@ -356,9 +367,9 @@ public class Controller {
     /**
      * Helper method for creating a new file
      *
-     * @param (content) (the string content of the new file being created)
-     * @param (file)    (the file variable passed by handleSaveAsMenuItem function
-     *                  indicating the file the user want to save to is valid)
+     * @param content the string content of the new file being created
+     * @param file    the file variable passed by handleSaveAsMenuItem function
+     *                  indicating the file the user want to save to is valid
      * @return returns true if file created successfully and false if error occurs
      */
     private boolean saveFile(String content, File file) {
@@ -387,8 +398,7 @@ public class Controller {
      * <p>
      * If the user clicked cancel at any point, the operation is stopped
      *
-     * @param event An ActionEvent object that gives information about the event
-     *              and its source.
+     * @param event gives information about the event and its source.
      */
     @FXML
     void handleExitMenuItem(Event event) {
@@ -418,6 +428,8 @@ public class Controller {
     /**
      * Handler method for "Undo" in the Edit menu
      * Undo the previous codeArea edition
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleUndo(Event event) {
@@ -428,6 +440,8 @@ public class Controller {
     /**
      * Handler method for "Redo" in the Edit menu
      * Redo the previous codeArea edition
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleRedo(Event event) {
@@ -439,6 +453,8 @@ public class Controller {
     /**
      * Handler method for "Cut" in the Edit menu
      * Cut all the selected text in the codeArea of the current Tab
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleCut(Event event) {
@@ -449,6 +465,8 @@ public class Controller {
     /**
      * Handler method for "Copy" in the Edit menu
      * Copy the selected text from the codeArea of the current Tab to the clipboard
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleCopy(Event event) {
@@ -459,6 +477,8 @@ public class Controller {
     /**
      * Handler method for "Paste" in the Edit menu
      * Paste text from the clipboard to the codeArea of the current Tab
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handlePaste(Event event) {
@@ -469,6 +489,8 @@ public class Controller {
     /**
      * Handler method for "Select all" in the Edit menu
      * Select all the text in the codeArea of the current Tab
+     *
+     * @param event gives information about the event and its source.
      */
     @FXML
     private void handleSelectAll(Event event) {
