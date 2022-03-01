@@ -17,7 +17,6 @@ import org.fxmisc.richtext.model.Paragraph;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.collection.ListModification;
-import proj04BittingEllmerWang.JavaKeywordsAsyncDemo;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -143,7 +142,6 @@ public class JavaKeywordsDemo extends Application {
         codeArea.replaceText(0, 0, sampleCode);
 
         Scene scene = new Scene(new StackPane(new VirtualizedScrollPane<>(codeArea)), 600, 400);
-        scene.getStylesheets().add(JavaKeywordsAsyncDemo.class.getResource("java-keywords.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Java Keywords Demo");
         primaryStage.show();

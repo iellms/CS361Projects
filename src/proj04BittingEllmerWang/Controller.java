@@ -11,6 +11,7 @@ package proj04BittingEllmerWang;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -31,23 +32,15 @@ import java.nio.file.Paths;
  */
 public class Controller {
 
-    @FXML
-    private TabPane tabPane;
+    @FXML private TabPane tabPane;
 
-    @FXML
-    private MenuItem Close;
+    @FXML private MenuItem Close;
+    @FXML private MenuItem Save;
+    @FXML private MenuItem SaveAs;
 
-    @FXML
-    private MenuItem Save;
+    @FXML private Menu Edit;
 
-    @FXML
-    private MenuItem SaveAs;
-
-    @FXML
-    private Menu Edit;
-
-    @FXML
-    private CodeArea codeArea;
+    @FXML private CodeArea codeArea;
 
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
@@ -59,15 +52,13 @@ public class Controller {
 
 
     /**
-     * this initializer makes sure that the very first tab is properly highlighted
+     * Makes sure that the very first tab is properly highlighted. Local variable never
+     * stored because instantiating a KeywordHighlighter creates a dedicated thread to
+     * syntax highlighting.
      */
     @FXML
     public void initialize() {
-        JavaKeywordsAsyncDemo jkad = new JavaKeywordsAsyncDemo(codeArea);
-    }
-
-
-    public static void main(String[] args) {
+        new KeywordHighlighter(codeArea);
     }
 
 
@@ -97,46 +88,40 @@ public class Controller {
         aboutDialogBox.setHeaderText("About this Application");
 
         aboutDialogBox.setContentText(
-                "Authors: Caleb Bitting, Ian Ellmer, and Baron Wang"
-                        + "\nLast Modified: Feb 28, 2022");
+                "Authors: Caleb Bitting, Ian Ellmer, and Baron Wang\n" +
+                "Last Modified: Feb 28, 2022");
 
         aboutDialogBox.show();
     }
 
     /**
      * Handler method for about new bar item. When the new item of the
-     * menu bar is clicked, a new tab is opened with code area.
+     * menu bar is clicked, a new tab is opened with a code area.
      * Calls helper function "getNextDefaultTitle", which returns a String like
      * "Untitled-1", or "Untitled-2", based on what is available.
      *
      * @see new tab and codearea
-     *
-     * <bug>for default tab, the close request handler may not work</bug>
      */
     @FXML
     private void handleNewMenuItem(Event event) {
+        // create the area to write
+        CodeArea codeArea = new CodeArea();
+        codeArea.setWrapText(true); // enabling all new tabs to wrap text
+        new KeywordHighlighter(codeArea); // colorizing codeArea
 
-
+        // visualize the area
         Tab newTab = new Tab();
-
-
-        // trigger close menu item handler when tab is closed
-        newTab.setOnCloseRequest(this::handleCloseMenuItem);
-
+        newTab.setContent(new VirtualizedScrollPane<>(codeArea));
         newTab.setText("Untitled-" + untitledNumber);
         newTab.setId("Untitled-" + untitledNumber++);
-        CodeArea codeArea = new CodeArea();
-        JavaKeywordsAsyncDemo jkad = new JavaKeywordsAsyncDemo(codeArea); // colorizing codeArea
-        codeArea.setWrapText(true); // enabling all new tabs to wrap text
-        newTab.setContent(new VirtualizedScrollPane(codeArea));
+        newTab.setOnCloseRequest(this::handleCloseMenuItem);
 
         // add new tab and move selection to front
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().select(newTab);
 
-        // re-enable the buttons when there are tabs
+        // re-enable the buttons if disabled
         clickableMenuItems(true);
-
     }
 
     /**
@@ -148,20 +133,17 @@ public class Controller {
      * and that String is put as content of the codearea of the new tab created
      * <p>
      * The new tab will also be initiated with the path of the file opened
-     *
-     * @throws IOException thrown when encountering issues with reading the files
      */
     @FXML
-    private void handleOpenMenuItem(Event event) throws IOException {
+    private void handleOpenMenuItem(Event event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open your text file");
 
         // restrict the file type to only text files
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt") // TODO: extend to other text files (.java, etc.)
+            new FileChooser.ExtensionFilter("Text Files", "*.txt") // TODO: extend to other text files (.java, etc.)
         );
         File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
-
 
         // if a valid file is selected
         if (selectedFile != null) {
@@ -194,11 +176,11 @@ public class Controller {
                 currentTab.setId(filePath);
             } catch (IOException e){
                 Alert failedToSaveAlert = new Alert(AlertType.ERROR);
+
+                // set alert properties
                 failedToSaveAlert.setTitle("Failed to open file");
                 failedToSaveAlert.setHeaderText("IO Exception");
-
-                failedToSaveAlert.setContentText(
-                        "Error opening file.");
+                failedToSaveAlert.setContentText("Error opening file.");
 
                 failedToSaveAlert.show();
             }
@@ -220,7 +202,6 @@ public class Controller {
      */
     @FXML
     private void handleCloseMenuItem(Event event) {
-
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get content of code area
@@ -273,7 +254,7 @@ public class Controller {
             tabPane.getTabs().remove(currentTab);
         }
 
-        // checks if there's any tab to close; if not, disable menu items
+        // checks if there's any tab left; if not, disable menu items
         if (tabPane.getTabs().isEmpty()) {
             clickableMenuItems(false);
         }
@@ -330,6 +311,7 @@ public class Controller {
         fileChooser.setTitle("Save as");
 
         //Set extension filter
+        // TODO: remove?
         FileChooser.ExtensionFilter extFilter =
                 new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
@@ -374,11 +356,10 @@ public class Controller {
             return true;
         } catch (IOException ex) {
             Alert failedToSaveAlert = new Alert(AlertType.ERROR);
+
             failedToSaveAlert.setTitle("Failed to save file");
             failedToSaveAlert.setHeaderText("IO Exception");
-
-            failedToSaveAlert.setContentText(
-                    "Error saving file.");
+            failedToSaveAlert.setContentText("Error saving file.");
 
             failedToSaveAlert.show();
             return false;
@@ -411,15 +392,23 @@ public class Controller {
     }
 
     /**
+     * Retrieves the current CodeArea. Created this method to reduce long lines.
+     * @return the current CodeArea
+     */
+    private CodeArea getCurrentCodeArea() {
+        Node currentNode = tabPane.getSelectionModel().getSelectedItem().getContent();
+        VirtualizedScrollPane<?> currentPane = (VirtualizedScrollPane<?>) (currentNode);
+
+        return (CodeArea) currentPane.getContent();
+    }
+
+    /**
      * Handler method for "Undo" in the Edit menu
      * Undo the previous codeArea edition
      */
     @FXML
     private void handleUndo(Event event) {
-        // get the current tab selected
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
-                .getSelectedItem().getContent()).getContent();
-        // call the undo method
+        CodeArea codeBox = getCurrentCodeArea();
         codeBox.undo();
     }
 
@@ -430,8 +419,7 @@ public class Controller {
     @FXML
     private void handleRedo(Event event) {
         // get the current tab selected
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
-                .getSelectedItem().getContent()).getContent();        // call the redo method
+        CodeArea codeBox = getCurrentCodeArea();
         codeBox.redo();
     }
 
@@ -441,9 +429,7 @@ public class Controller {
      */
     @FXML
     private void handleCut(Event event) {
-        // get the current tab selected
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
-                .getSelectedItem().getContent()).getContent();        // call the cut method
+        CodeArea codeBox = getCurrentCodeArea();
         codeBox.cut();
     }
 
@@ -453,9 +439,7 @@ public class Controller {
      */
     @FXML
     private void handleCopy(Event event) {
-        // get the current tab selected
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
-                .getSelectedItem().getContent()).getContent();        // call the copy method
+        CodeArea codeBox = getCurrentCodeArea();
         codeBox.copy();
     }
 
@@ -465,9 +449,7 @@ public class Controller {
      */
     @FXML
     private void handlePaste(Event event) {
-        // get the current tab selected
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
-                .getSelectedItem().getContent()).getContent();        // call the paste method
+        CodeArea codeBox = getCurrentCodeArea();
         codeBox.paste();
     }
 
@@ -477,9 +459,7 @@ public class Controller {
      */
     @FXML
     private void handleSelectAll(Event event) {
-        // get the current tab selected
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) tabPane.getSelectionModel()
-                .getSelectedItem().getContent()).getContent();        // call the select all method
+        CodeArea codeBox = getCurrentCodeArea();
         codeBox.selectAll();
     }
 }

@@ -9,12 +9,9 @@
 package proj04BittingEllmerWang;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
 
 import java.io.IOException;
 
@@ -33,24 +30,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-
-
-
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
-
-
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         Controller controller = fxmlLoader.getController();
 
         primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                // exit method triggered when user tries to click on the red dot on top corner
-                controller.handleExitMenuItem(event);
-            }
-        });
+        // exit method triggered when user tries to click on the red dot on top corner
+        primaryStage.setOnCloseRequest(controller::handleExitMenuItem);
     }
 }
