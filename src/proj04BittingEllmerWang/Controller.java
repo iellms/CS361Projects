@@ -141,7 +141,7 @@ public class Controller {
 
         // restrict the file type to only text files
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Text Files", "*.txt") // TODO: extend to other text files (.java, etc.)
+            new FileChooser.ExtensionFilter("Java Files", "*.java")
         );
         File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
 
@@ -164,10 +164,10 @@ public class Controller {
                 // read the content of the file to a string
                 String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
                 // generate a new tab and put the file content into the code area
-                handleNewMenuItem(event); // TODO: probably rename the method as this isn't handling this event
+                handleNewMenuItem(event);
                 // get the current codeBox
                 Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-                CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
+                CodeArea codeBox = getCurrentCodeArea();
                 // set the content of the codeBox
                 codeBox.appendText(fileContent);
                 // set the title of the tab
@@ -192,9 +192,9 @@ public class Controller {
 
     /**
      * Handler for "Close" menu item
-     * When the "Close" button is clicked, or when the tab is closed, the program would check
-     * if any changes has been made since the last save event, a dialog appears asking if the user
-     * wants to save again
+     * When the "Close" button is clicked, or when the tab is closed, the program would
+     * check if any changes has been made since the last save event, a dialog appears
+     * asking if the user wants to save again
      * <p>
      * After the user makes selection the tab is closed
      * <p>
@@ -205,7 +205,7 @@ public class Controller {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get content of code area
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
+        CodeArea codeBox = getCurrentCodeArea();
         String currentContent = codeBox.getText();
         // get the file associated with the current tab
         File file = new File(currentTab.getId());
@@ -262,10 +262,12 @@ public class Controller {
 
     /**
      * Handler for "save" menu item
-     * When the "save" button is clicked, if file of the name of the tab exist in the current directory, it will
-     * overwrite the file with the content in the code box of the current tab
+     * When the "save" button is clicked, if file of the name of the tab exist in the
+     * current directory, it will overwrite the file with the content in the code box of
+     * the current tab.
      * <p>
-     * If that file didn't exist, it will call the save as menu item for the user to put in a new name
+     * If that file didn't exist, it will call the save as menu item for the user to put
+     * in a new name
      */
     @FXML
     private void handleSaveMenuItem(Event event) {
@@ -279,7 +281,7 @@ public class Controller {
 
         if (file.exists()) {
             // get content of codearea
-            CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
+            CodeArea codeBox = getCurrentCodeArea();
             String content = codeBox.getText();
 
             // save the content of the current tab
@@ -291,11 +293,13 @@ public class Controller {
 
     /**
      * Handler for "save as" menu item
-     * When the "save as" button is clicked, a save as window appears asking the user to enter
-     * a file name for the text file and if the file exist, the prompt will ask user whether to overwrite
+     * When the "save as" button is clicked, a save as window appears asking the user to
+     * enter a file name for the text file and if the file exist, the prompt will ask user
+     * whether to overwrite.
      * <p>
-     * After file is created successfully, the user will see a prompt, and if not, the user will also see an error
-     * message; At the same time, the tab name will be changed to the file path saved
+     * After file is created successfully, the user will see a prompt, and if not, the
+     * user will also see an error message; At the same time, the tab name will be changed
+     * to the file path saved.
      * <p>
      * Modeled after the Keystore demonstrated at http://java-buddy.blogspot.com/
      */
@@ -304,17 +308,11 @@ public class Controller {
         // get the current tab
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         // get the current codeBox
-        CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
+        CodeArea codeBox = getCurrentCodeArea();
 
         // initiate a new file chooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save as");
-
-        //Set extension filter
-        // TODO: remove?
-        FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
         File file = fileChooser.showSaveDialog(tabPane.getScene().getWindow());
@@ -344,8 +342,8 @@ public class Controller {
      * Helper method for creating a new file
      *
      * @param (content) (the string content of the new file being created)
-     * @param (file)    (the file variable passed by handleSaveAsMenuItem function indicating the
-     *                  file the user want to save to is valid)
+     * @param (file)    (the file variable passed by handleSaveAsMenuItem function
+     *                  indicating the file the user want to save to is valid)
      * @return returns true if file created successfully and false if error occurs
      */
     private boolean SaveFile(String content, File file) {
