@@ -156,14 +156,16 @@ public class Controller {
             try {
                 // get the path of the file selected
                 String filePath = selectedFile.getPath();
-
                 // check if the file has already been opened in tabPane.
                 for (Tab tab : tabPane.getTabs()) {
-                    if (fileLocation.get(tab.getText()).equals(filePath)) {
-                        // if so, switch to existing tab.
-                        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-                        selectionModel.select(tab); // select by tab
-                        return;
+                    String tabFileLocation = fileLocation.get(tab.getText());
+                    if (tabFileLocation != null){
+                        if (tabFileLocation.equals(filePath)) {
+                            // if so, switch to existing tab.
+                            SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+                            selectionModel.select(tab); // select by tab
+                            return;
+                        }
                     }
                 }
 
@@ -176,6 +178,8 @@ public class Controller {
                 CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
                 // set the content of the codeBox
                 codeBox.appendText(fileContent);
+                // adding keyword highlighting
+                new KeywordHighlighter(codeBox);
                 // set the title of the tab
                 currentTab.setText(selectedFile.getName());
                 fileLocation.put(selectedFile.getName(),selectedFile.getPath());
