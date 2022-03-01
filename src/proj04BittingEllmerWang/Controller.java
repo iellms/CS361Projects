@@ -241,7 +241,9 @@ public class Controller {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     handleSaveMenuItem(event);
-                    tabPane.getTabs().remove(currentTab);
+                    if(!event.isConsumed()){
+                        tabPane.getTabs().remove(currentTab);
+                    } 
                 } else if (type == cancelButton) {
                     event.consume();
                 } else {  // type == noButton
@@ -337,6 +339,9 @@ public class Controller {
                 alert.setContentText("Failed creating " + file.getPath());
                 alert.show();
             }
+        }
+        else{
+            event.consume(); //Stops anything from happening
         }
     }
 
