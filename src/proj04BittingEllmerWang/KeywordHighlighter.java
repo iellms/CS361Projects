@@ -58,7 +58,7 @@ public class KeywordHighlighter extends Application {
     private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
     private static final String COMMENT_PATTERN =
             "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/"   // for text block processing
-            + "|" + "/\\*[^\\v]*" + "|" + "^\\h*\\*([^\\v]*|/)";  // for visible paragraph processing (line by line)
+            + "|" + "/\\*[^\\v]*" + "|" + "^\\h*\\*([^\\v]*|/)";
     // new INTEGER_PATTERN that looks around for decimal point.
     // Inspired from Wiktor Stribiżew's answer on StackOverflow
     private static final String INTEGER_PATTERN = "\\b(?<!\\.)([1-9]\\d*|0)(?!\\.)\\b";
