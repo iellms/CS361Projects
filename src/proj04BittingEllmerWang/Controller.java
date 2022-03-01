@@ -283,7 +283,7 @@ public class Controller {
             String content = codeBox.getText();
 
             // save the content of the current tab
-            SaveFile(content, file);
+            saveFile(content, file);
         } else {
             handleSaveAsMenuItem(event);
         }
@@ -320,7 +320,7 @@ public class Controller {
         File file = fileChooser.showSaveDialog(tabPane.getScene().getWindow());
 
         if (file != null) {
-            if (SaveFile(codeBox.getText(), file)) {
+            if (saveFile(codeBox.getText(), file)) {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
@@ -348,7 +348,7 @@ public class Controller {
      *                  file the user want to save to is valid)
      * @return returns true if file created successfully and false if error occurs
      */
-    private boolean SaveFile(String content, File file) {
+    private boolean saveFile(String content, File file) {
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(content);
