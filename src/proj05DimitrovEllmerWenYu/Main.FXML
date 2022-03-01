@@ -22,7 +22,7 @@
 
 <AnchorPane prefHeight="250.0" prefWidth="300.0" stylesheets="@Main.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="proj04BittingEllmerWang.Controller">
+            fx:controller="proj05DimitrovEllmerWenYu.Controller">
     <children>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" prefHeight = "30">
             <menus>
