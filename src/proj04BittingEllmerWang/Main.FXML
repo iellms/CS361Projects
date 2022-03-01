@@ -88,7 +88,7 @@
         </MenuBar>
         <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" AnchorPane.leftAnchor = "0.0"
                  AnchorPane.rightAnchor = "0.0" AnchorPane.topAnchor = "30.0" AnchorPane.bottomAnchor = "0.0">
-            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem" id="Untitled">
+            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem">
                 <VirtualizedScrollPane>
                     <content>
                         <CodeArea fx:id="codeArea" wrapText="true"/>
