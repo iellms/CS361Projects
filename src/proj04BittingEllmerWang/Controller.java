@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import java.util.HashMap;
+
 
 /**
  * The Controller Class for handling menu items click events of the stage
@@ -45,9 +47,13 @@ public class Controller {
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
 
+    // a hasmmap that stores what file locations for tabnames
+    private HashMap<String,String> fileLocation;
 
     public Controller() {
         this.untitledNumber = 1;
+        this.fileLocation = new HashMap<String,String>();
+        fileLocation.put("Untitled", null);
     }
 
 
@@ -113,7 +119,7 @@ public class Controller {
         Tab newTab = new Tab();
         newTab.setContent(new VirtualizedScrollPane<>(codeArea));
         newTab.setText("Untitled-" + untitledNumber);
-        newTab.setId("Untitled-" + untitledNumber++);
+        fileLocation.put("Untitled-" + untitledNumber++, null);
         newTab.setOnCloseRequest(this::handleCloseMenuItem);
 
         // add new tab and move selection to front
@@ -153,7 +159,7 @@ public class Controller {
 
                 // check if the file has already been opened in tabPane.
                 for (Tab tab : tabPane.getTabs()) {
-                    if (tab.getId().equals(filePath)) {
+                    if (fileLocation.get(tab.getText()).equals(filePath)) {
                         // if so, switch to existing tab.
                         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
                         selectionModel.select(tab); // select by tab
@@ -171,9 +177,8 @@ public class Controller {
                 // set the content of the codeBox
                 codeBox.appendText(fileContent);
                 // set the title of the tab
-                String[] fileAncestors = filePath.split("/");
-                currentTab.setText(fileAncestors[fileAncestors.length - 1]);
-                currentTab.setId(filePath);
+                currentTab.setText(selectedFile.getName());
+                fileLocation.put(selectedFile.getName(),selectedFile.getPath());
             } catch (IOException e){
                 Alert failedToSaveAlert = new Alert(AlertType.ERROR);
 
@@ -208,13 +213,14 @@ public class Controller {
         CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
         String currentContent = codeBox.getText();
         // get the file associated with the current tab
-        File file = new File(currentTab.getId());
+        String filePath = fileLocation.get(currentTab.getText());
         // check if changes has been made
         boolean changed = false;
         // check if the codeArea has been modified
 
         // check if the content of the file matches the content of the codeArea
-        if (file.exists()) {
+        if (filePath != null) {
+            File file = new File(filePath);
             try {
                 String fileContent = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 // if not it has been modified
@@ -232,7 +238,7 @@ public class Controller {
         if (changed) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(null);
-            alert.setContentText("Changes has been made to " + file.getPath() +
+            alert.setContentText("Changes has been made to " + currentTab.getText() + 
                     "\ndo you want to save it?");
             ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
             ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
@@ -275,11 +281,12 @@ public class Controller {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
 
         // get the name of the tab (file path)
-        String fileName = currentTab.getId();
+        String fileName = fileLocation.get(currentTab.getText());
 
-        File file = new File(fileName);
+        
 
-        if (file.exists()) {
+        if (fileName != null) {
+            File file = new File(fileName);
             // get content of codearea
             CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
             String content = codeBox.getText();
@@ -329,9 +336,8 @@ public class Controller {
                 alert.setContentText("Successfully created " + file.getPath());
                 alert.show();
                 // change the name of the tab to the file path
-                String[] fileAncestors = file.getPath().split("/");
-                currentTab.setText(fileAncestors[fileAncestors.length - 1]);
-                currentTab.setId(file.getPath());
+                currentTab.setText(file.getName());
+                fileLocation.put(file.getName(), file.getPath());
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
