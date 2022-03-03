@@ -1,9 +1,9 @@
 /*
- * File: proj04BittingEllmerWang.Controller.java
- * Names: Caleb Bitting, Ian Ellmer, Baron Wang
+ * File: proj05DimitrovEllmerWenYu.Controller.java
+ * Names: Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu
  * Class: CS361
- * Project 4
- * Date: 2/28/2022
+ * Project 5
+ * Date: 3/7/21
  */
 
 package proj05DimitrovEllmerWenYu;
@@ -30,7 +30,7 @@ import java.util.HashMap;
 /**
  * The Controller Class for handling menu items click events of the stage
  *
- * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
+ * @author (Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu)
  */
 public class Controller {
 
@@ -94,8 +94,8 @@ public class Controller {
         aboutDialogBox.setHeaderText("About this Application");
 
         aboutDialogBox.setContentText(
-                "Authors: Caleb Bitting, Ian Ellmer, and Baron Wang\n" +
-                "Last Modified: Feb 28, 2022");
+                "Authors: Anton Dimitrov, Ian Ellmer, Muqing Wen, and Alex Yu\n" +
+                "Last Modified: Mar 3, 2022");
 
         aboutDialogBox.show();
     }
