@@ -15,12 +15,15 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import org.fxmisc.flowless.VirtualizedScrollPane ?>
 <?import org.fxmisc.richtext.CodeArea ?>
+<?import org.fxmisc.richtext.StyleClassedTextArea?>
+
 
 
 <AnchorPane prefHeight="250.0" prefWidth="300.0" stylesheets="@Main.css"
@@ -96,7 +99,7 @@
             <Button fx:id = "stopButton" text="Stop"/>
         </ToolBar>
         <TabPane fx:id="tabPane" AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
-                 AnchorPane.topAnchor = "67.5" AnchorPane.bottomAnchor = "0.0">
+                 AnchorPane.topAnchor = "67.5" AnchorPane.bottomAnchor = "140.0">
             <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem">
                 <VirtualizedScrollPane>
                     <content>
@@ -105,5 +108,12 @@
                 </VirtualizedScrollPane>
             </Tab>
         </TabPane>
+        <TitledPane text="Console" collapsible="false"
+                    AnchorPane.topAnchor = "360.0" AnchorPane.bottomAnchor = "0.0"
+                    AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0">
+            <content>
+                <StyleClassedTextArea fx:id="console" />
+            </content>
+      </TitledPane>
     </children>
 </AnchorPane>
