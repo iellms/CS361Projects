@@ -1,9 +1,9 @@
 /*
- * File: proj04BittingEllmerWang.Main.java
- * Names: Caleb Bitting, Ian Ellmer, Baron Wang
+ * File: proj05DimitrovEllmerWenYu.Main.java
+ * Names: Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu
  * Class: CS361
- * Project 3
- * Date: 2/28/2022
+ * Project 5
+ * Date: 3/7/21
  */
 
 package proj05DimitrovEllmerWenYu;
@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * The Main Class for loading the fxml file and building the stage
  *
- * @author (Caleb Bitting, Ian Ellmer, Baron Wang)
+ * @author (Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu)
  */
 public class Main extends Application {
 
@@ -34,7 +34,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         Controller controller = fxmlLoader.getController();
 
-        primaryStage.setTitle("Baron, Caleb, and Ian's Project 4");
+        primaryStage.setTitle("Alex, Anton, Ian, and Muqing's Project 5");
         primaryStage.setScene(scene);
         primaryStage.show();
         // exit method triggered when user tries to click on the red dot on top corner

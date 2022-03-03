@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--* File: proj04BittingEllmerWang.Main.FXML-->
-<!--* Names: Caleb Bitting, Ian Ellmer, Baron Wang-->
-<!--* Class: CS361-->
-<!--* Project 4-->
-<!--* Date: 2/28/2022-->
+<!--
+ File: proj05DimitrovEllmerWenYu.Main.FXML
+ Names: Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu
+ Class: CS361
+ Project 5
+ Date: 3/7/21
+ -->
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
@@ -13,6 +15,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.input.KeyCodeCombination?>
@@ -86,8 +89,14 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" AnchorPane.leftAnchor = "0.0"
-                 AnchorPane.rightAnchor = "0.0" AnchorPane.topAnchor = "30.0" AnchorPane.bottomAnchor = "0.0">
+        <ToolBar AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
+                 AnchorPane.topAnchor = "30.0">
+            <Button fx:id = "compileButton" text="Compile"/>
+            <Button fx:id = "compileRunButton" text="Compile &amp; Run"/>
+            <Button fx:id = "stopButton" text="Stop"/>
+        </ToolBar>
+        <TabPane fx:id="tabPane" AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
+                 AnchorPane.topAnchor = "67.5" AnchorPane.bottomAnchor = "0.0">
             <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem">
                 <VirtualizedScrollPane>
                     <content>

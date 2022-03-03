@@ -1,9 +1,9 @@
 /*
- * File: JavaKeywordAsyncDemo.java
- * Names: Baron Wang, Caleb Bitting, Ian Ellmer
- * Class: CS 361
- * Project 4
- * Date: February 28
+ * File: proj05DimitrovEllmerWenYu.KeywordHighlighter.java
+ * Names: Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu
+ * Class: CS361
+ * Project 5
+ * Date: 3/7/21
  */
 
 package proj05DimitrovEllmerWenYu;
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * will enable syntax coloring of the CodeArea instance
  * passed into the constructor.
  *
- * @author Baron Wang
+ * @author (Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu)
  */
 public class KeywordHighlighter extends Application {
 
