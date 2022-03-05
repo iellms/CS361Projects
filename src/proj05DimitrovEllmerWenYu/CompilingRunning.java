@@ -10,19 +10,30 @@ package proj05DimitrovEllmerWenYu;
 import java.io.IOException;
 
 public class CompilingRunning{
+    public static Thread currThread = null;
 
-    public void compile(String filePath) throws IOException, InterruptedException {
-        CompileOnly compiler = new CompileOnly(filePath);
-        compiler.start();
+    public void compile(String filePath){
+        if (CompilingRunning.currThread == null){
+            CompileOnly compiler = new CompileOnly(filePath);
+            CompilingRunning.currThread = compiler;
+            compiler.start();
+        }
+
     }
 
-    public void compileAndRun(String filePath) throws IOException, InterruptedException {
-        CompileAndRun compileAndRun = new CompileAndRun(filePath);
-        compileAndRun.start();
+    public void compileAndRun(String filePath){
+        if (CompilingRunning.currThread == null){
+            CompileAndRun compileRun = new CompileAndRun(filePath);
+            CompilingRunning.currThread = compileRun;
+            compileRun.start();
+        }
     }
 
     public void stop() {
-        
+        if (CompilingRunning.currThread != null){
+            CompilingRunning.currThread.interrupt();
+            CompilingRunning.currThread = null;
+        }
     }
 
     private class CompileOnly extends Thread{
@@ -33,7 +44,17 @@ public class CompilingRunning{
         }
 
         public void run(){
-            System.out.println(this.filePath);
+            // Compile and print out 
+            ProcessBuilder compilationProcess = new ProcessBuilder();
+            compilationProcess.command("javac " + filePath);
+            try {
+
+                Process process = compilationProcess.start();
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            CompilingRunning.currThread = null;
         }
     
     }
@@ -47,9 +68,16 @@ public class CompilingRunning{
 
         public void run(){
             System.out.println(this.filePath);
+            CompilingRunning.currThread = null;
         }
 
     }
     
+    public static void main(String[] args){
+        CompilingRunning test = new CompilingRunning();
+        test.compile("S");
+        test.stop();
+        test.stop();
+    }
 }
 
