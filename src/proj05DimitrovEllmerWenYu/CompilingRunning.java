@@ -44,19 +44,16 @@ public class CompilingRunning{
         }
 
         public void run(){
-            // Compile and print out 
-            ProcessBuilder compilationProcess = new ProcessBuilder();
-            compilationProcess.command("javac " + filePath);
             try {
-
+                ProcessBuilder compilationProcess = new ProcessBuilder();
+                compilationProcess.command("javac" , filePath);
                 Process process = compilationProcess.start();
-    
+                //TODO: Add printing to the output stream
+                CompilingRunning.currThread = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            CompilingRunning.currThread = null;
         }
-    
     }
     private class CompileAndRun extends Thread{
         private String filePath;
@@ -75,9 +72,7 @@ public class CompilingRunning{
     
     public static void main(String[] args){
         CompilingRunning test = new CompilingRunning();
-        test.compile("S");
-        test.stop();
-        test.stop();
+        test.compile("/Users/ianellmer/Desktop/TestingJava/A.java");
     }
 }
 
