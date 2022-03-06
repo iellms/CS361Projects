@@ -179,8 +179,6 @@ public class Controller {
                 CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
                 // set the content of the codeBox
                 codeBox.appendText(fileContent);
-                // adding keyword highlighting
-                new KeywordHighlighter(codeBox);
                 // set the title of the tab
                 currentTab.setText(selectedFile.getName());
                 fileLocation.put(currentTab,selectedFile.getPath());
@@ -371,13 +369,6 @@ public class Controller {
             fileWriter.close();
             return true;
         } catch (IOException ex) {
-            Alert failedToSaveAlert = new Alert(AlertType.ERROR);
-
-            failedToSaveAlert.setTitle("Failed to save file");
-            failedToSaveAlert.setHeaderText("IO Exception");
-            failedToSaveAlert.setContentText("Error saving file.");
-
-            failedToSaveAlert.show();
             return false;
         }
 
