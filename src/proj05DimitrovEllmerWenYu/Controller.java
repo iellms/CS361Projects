@@ -17,10 +17,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.StyleClassedTextArea;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -44,11 +43,16 @@ public class Controller {
 
     @FXML private CodeArea codeArea;
 
+    @FXML private StyleClassedTextArea console;
+
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
 
-    // a hasmmap that stores what file locations for tabnames
+    // a hashmap that stores what file locations for tabnames
     private HashMap<String,String> fileLocation;
+
+    // printstream for console
+    private PrintStream ps;
 
     public Controller() {
         this.untitledNumber = 1;
@@ -65,8 +69,32 @@ public class Controller {
     @FXML
     public void initialize() {
         new KeywordHighlighter(codeArea);
+        Console newConsole = new Console(console);
+        this.ps = new PrintStream(newConsole,true);
+        System.setOut(this.ps);
+        System.setErr(this.ps);
+        for (char c: "some text".toCharArray()){
+            newConsole.write(c);
+        }
+//        this.ps.close();
+
     }
 
+    /**
+     * Console subclass for directing output to JavaFX's console
+     */
+    public static class Console extends OutputStream{
+        private StyleClassedTextArea output;
+
+        public Console(StyleClassedTextArea ta){
+            this.output = ta;
+        }
+
+        @Override
+        public void write(int i){
+            output.appendText(String.valueOf((char)i));
+        }
+    }
 
     /**
      * Helper method to disable/re-enable selected menu items Close, Save, SaveAs,
@@ -79,6 +107,17 @@ public class Controller {
         Save.setDisable(!clickable);
         SaveAs.setDisable(!clickable);
         Edit.setDisable(!clickable);
+    }
+
+    /**
+     * Handler method for compile button.
+     */
+    @FXML
+    private void handleCompileButton(){
+        CompilingRunning compiler = new CompilingRunning();
+        compiler.compile(fileLocation.get(tabPane.getSelectionModel().getSelectedItem().getText()));
+
+        System.out.println("Compiling");
     }
 
     /**
@@ -147,7 +186,7 @@ public class Controller {
 
         // restrict the file type to only text files
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Text Files", "*.txt") // TODO: extend to other text files (.java, etc.)
+            new FileChooser.ExtensionFilter("Java Files", "*.java") // TODO: extend to other text files (.java, etc.)
         );
         File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
 
@@ -326,7 +365,7 @@ public class Controller {
         //Set extension filter
         // TODO: remove?
         FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                new FileChooser.ExtensionFilter("Java files (*.java)", "*.java");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog

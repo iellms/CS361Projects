@@ -94,7 +94,7 @@
         </MenuBar>
         <ToolBar AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
                  AnchorPane.topAnchor = "30.0">
-            <Button fx:id = "compileButton" text="Compile"/>
+            <Button fx:id = "compileButton" text="Compile" onAction="#handleCompileButton"/>
             <Button fx:id = "compileRunButton" text="Compile &amp; Run"/>
             <Button fx:id = "stopButton" text="Stop"/>
         </ToolBar>

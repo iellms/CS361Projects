@@ -59,38 +59,44 @@ public class CompilingRunning{
                 e.printStackTrace();
             } catch (InterruptedException e){
                 System.out.println("Interrupted");
+
             }
         }
     }
     private class CompileAndRun extends Thread{
         private String filePath;
+        private Process compProcess;
+        private Process runProcess;
 
 
         public CompileAndRun(String filePath){
             this.filePath = filePath;
+
         }
 
         public void run(){
             try {
                 ProcessBuilder compilationProcess = new ProcessBuilder("javac" , filePath);
-                Process compProcess = compilationProcess.start();
+                this.compProcess = compilationProcess.start();
                 compilationProcess.redirectError(ProcessBuilder.Redirect.INHERIT);
                 compilationProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
                 compilationProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-                int exitcode = compProcess.waitFor();
+                int exitcode = this.compProcess.waitFor();
                 System.out.println("Compilation completed with exit code: " + exitcode);
                 ProcessBuilder runningProcess = new ProcessBuilder("java", filePath);
                 runningProcess.redirectError(ProcessBuilder.Redirect.INHERIT);
                 runningProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
                 runningProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-                Process runProcess = runningProcess.start();
-                int exitCode = runProcess.waitFor(); //GETS STUCK HERE
+                this.runProcess = runningProcess.start();
+                int exitCode = this.runProcess.waitFor(); //GETS STUCK HERE
                 System.out.println("\nRunning completed with exit code : " + exitCode);
                 CompilingRunning.currThread = null;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e){
                 System.out.println("Interrupted");
+                this.compProcess.destroy();
+                this.runProcess.destroy();
             }
         }
 
@@ -98,7 +104,8 @@ public class CompilingRunning{
     
     public static void main(String[] args){
         CompilingRunning test = new CompilingRunning();
-        test.compileAndRun("/Users/ianellmer/Desktop/TestingJava/A.java");
+        test.compileAndRun(
+                "/Users/hsyu98/Documents/GitHub/Project5/src/proj05DimitrovEllmerWenYu/JavaScannerExample.java");
         try{
         Thread.sleep(10000);
         }
