@@ -7,33 +7,33 @@
  */
 package proj05DimitrovEllmerWenYu;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class CompilingRunning{
-    public static Process currProcess = null;
+    public static Thread currThread = null;
 
     public void compile(String filePath){
-        if (CompilingRunning.currProcess== null){
+        if (CompilingRunning.currThread == null){
             CompileOnly compiler = new CompileOnly(filePath);
+            CompilingRunning.currThread = compiler;
             compiler.start();
         }
 
     }
 
     public void compileAndRun(String filePath){
-        if (CompilingRunning.currProcess == null){
+        if (CompilingRunning.currThread == null){
             CompileAndRun compileRun = new CompileAndRun(filePath);
+            CompilingRunning.currThread = compileRun;
             compileRun.start();
         }
     }
 
     public void stop() {
         //TODO: Fix this method, it isn't working the way that it should
-        if (CompilingRunning.currProcess != null){
-            CompilingRunning.currProcess.destroy();
-            CompilingRunning.currProcess = null;
+        if (CompilingRunning.currThread != null){
+            CompilingRunning.currThread.interrupt();
+            CompilingRunning.currThread = null;
         }
     }
 
@@ -49,10 +49,9 @@ public class CompilingRunning{
                 ProcessBuilder compilationProcess = new ProcessBuilder();
                 compilationProcess.command("javac" , filePath);
                 Process process = compilationProcess.start();
-                CompilingRunning.currProcess = process;
                 //TODO: Add printing to the console (perhaps pass in the console as an argument)
                 System.out.println(process.getInputStream().readAllBytes());
-                CompilingRunning.currProcess = null;
+                CompilingRunning.currThread = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -70,23 +69,15 @@ public class CompilingRunning{
             try {
                 ProcessBuilder compilationProcess = new ProcessBuilder("javac" , filePath);
                 Process compProcess = compilationProcess.start();
-                CompilingRunning.currProcess = compProcess;
                 //TODO: Add printing to the console (perhaps pass in the console as an argument)
                 ProcessBuilder runningProcess = new ProcessBuilder("java", filePath);
                 runningProcess.redirectErrorStream(true);
+                runningProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
+                runningProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                 Process runProcess = runningProcess.start();
-                CompilingRunning.currProcess = runProcess;
-                BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-                int exitCode = runProcess.waitFor();
+                int exitCode = runProcess.waitFor(); //GETS STUCK HERE
                 System.out.println("\nExited with error code : " + exitCode);
-                CompilingRunning.currProcess = null;
+                CompilingRunning.currThread = null;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e){
@@ -99,6 +90,13 @@ public class CompilingRunning{
     public static void main(String[] args){
         CompilingRunning test = new CompilingRunning();
         test.compileAndRun("/Users/ianellmer/Desktop/TestingJava/A.java");
+        try{
+        Thread.sleep(1000);
+        }
+        catch(InterruptedException e){
+            System.out.println("here");
+        }
+        test.stop();
     }
 }
 
