@@ -9,6 +9,7 @@
 package proj05DimitrovEllmerWenYu;
 
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -92,7 +93,10 @@ public class Controller {
 
         @Override
         public void write(int i){
-            output.appendText(String.valueOf((char)i));
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    output.appendText(String.valueOf((char)i));                }
+            });
         }
     }
 
