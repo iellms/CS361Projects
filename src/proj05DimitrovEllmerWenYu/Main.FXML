@@ -100,7 +100,7 @@
         </ToolBar>
         <TabPane fx:id="tabPane" AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
                  AnchorPane.topAnchor = "67.5" AnchorPane.bottomAnchor = "140.0">
-            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem">
+            <Tab fx:id = "firstTab" text="Untitled" onCloseRequest="#handleCloseMenuItem">
                 <VirtualizedScrollPane>
                     <content>
                         <CodeArea fx:id="codeArea" wrapText="true"/>

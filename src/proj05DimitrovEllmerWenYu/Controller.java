@@ -35,6 +35,7 @@ import java.util.HashMap;
 public class Controller {
 
     @FXML private TabPane tabPane;
+    @FXML private Tab firstTab;
 
     @FXML private MenuItem Close;
     @FXML private MenuItem Save;
@@ -48,12 +49,12 @@ public class Controller {
     private int untitledNumber;
 
     // a hasmmap that stores what file locations for tabnames
-    private HashMap<String,String> fileLocation;
+    private HashMap<Tab,String> fileLocation;
 
     public Controller() {
         this.untitledNumber = 1;
-        this.fileLocation = new HashMap<String,String>();
-        fileLocation.put("Untitled", null);
+        this.fileLocation = new HashMap<Tab,String>();
+        fileLocation.put(firstTab, null);
     }
 
 
@@ -118,8 +119,8 @@ public class Controller {
         // visualize the area
         Tab newTab = new Tab();
         newTab.setContent(new VirtualizedScrollPane<>(codeArea));
-        newTab.setText("Untitled-" + untitledNumber);
-        fileLocation.put("Untitled-" + untitledNumber++, null);
+        newTab.setText("Untitled-" + untitledNumber++);
+        fileLocation.put(newTab, null);
         newTab.setOnCloseRequest(this::handleCloseMenuItem);
 
         // add new tab and move selection to front
@@ -158,7 +159,7 @@ public class Controller {
                 String filePath = selectedFile.getPath();
                 // check if the file has already been opened in tabPane.
                 for (Tab tab : tabPane.getTabs()) {
-                    String tabFileLocation = fileLocation.get(tab.getText());
+                    String tabFileLocation = fileLocation.get(tab);
                     if (tabFileLocation != null){
                         if (tabFileLocation.equals(filePath)) {
                             // if so, switch to existing tab.
@@ -182,7 +183,7 @@ public class Controller {
                 new KeywordHighlighter(codeBox);
                 // set the title of the tab
                 currentTab.setText(selectedFile.getName());
-                fileLocation.put(selectedFile.getName(),selectedFile.getPath());
+                fileLocation.put(currentTab,selectedFile.getPath());
             } catch (IOException e){
                 Alert failedToSaveAlert = new Alert(AlertType.ERROR);
 
@@ -217,7 +218,7 @@ public class Controller {
         CodeArea codeBox = (CodeArea) ((VirtualizedScrollPane<?>) currentTab.getContent()).getContent();
         String currentContent = codeBox.getText();
         // get the file associated with the current tab
-        String filePath = fileLocation.get(currentTab.getText());
+        String filePath = fileLocation.get(currentTab);
         // check if changes has been made
         boolean changed = false;
         // check if the codeArea has been modified
@@ -285,7 +286,7 @@ public class Controller {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
 
         // get the name of the tab (file path)
-        String fileName = fileLocation.get(currentTab.getText());
+        String fileName = fileLocation.get(currentTab);
 
         
 
@@ -341,7 +342,7 @@ public class Controller {
                 alert.show();
                 // change the name of the tab to the file path
                 currentTab.setText(file.getName());
-                fileLocation.put(file.getName(), file.getPath());
+                fileLocation.put(currentTab, file.getPath());
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
