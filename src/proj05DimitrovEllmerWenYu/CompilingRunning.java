@@ -48,12 +48,17 @@ public class CompilingRunning{
             try {
                 ProcessBuilder compilationProcess = new ProcessBuilder();
                 compilationProcess.command("javac" , filePath);
+                compilationProcess.redirectErrorStream(true);
+                compilationProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
+                compilationProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                 Process process = compilationProcess.start();
-                //TODO: Add printing to the console (perhaps pass in the console as an argument)
-                System.out.println(process.getInputStream().readAllBytes());
+                int exitcode = process.waitFor();
+                System.out.println("Compilation completed with exit code: " + exitcode);
                 CompilingRunning.currThread = null;
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e){
+                System.out.println("Interrupted");
             }
         }
     }
@@ -69,19 +74,23 @@ public class CompilingRunning{
             try {
                 ProcessBuilder compilationProcess = new ProcessBuilder("javac" , filePath);
                 Process compProcess = compilationProcess.start();
-                //TODO: Add printing to the console (perhaps pass in the console as an argument)
+                compilationProcess.redirectError(ProcessBuilder.Redirect.INHERIT);
+                compilationProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
+                compilationProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+                int exitcode = compProcess.waitFor();
+                System.out.println("Compilation completed with exit code: " + exitcode);
                 ProcessBuilder runningProcess = new ProcessBuilder("java", filePath);
-                runningProcess.redirectErrorStream(true);
+                runningProcess.redirectError(ProcessBuilder.Redirect.INHERIT);
                 runningProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
                 runningProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                 Process runProcess = runningProcess.start();
                 int exitCode = runProcess.waitFor(); //GETS STUCK HERE
-                System.out.println("\nExited with error code : " + exitCode);
+                System.out.println("\nRunning completed with exit code : " + exitCode);
                 CompilingRunning.currThread = null;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e){
-                e.printStackTrace();
+                System.out.println("Interrupted");
             }
         }
 
@@ -91,7 +100,7 @@ public class CompilingRunning{
         CompilingRunning test = new CompilingRunning();
         test.compileAndRun("/Users/ianellmer/Desktop/TestingJava/A.java");
         try{
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         }
         catch(InterruptedException e){
             System.out.println("here");
