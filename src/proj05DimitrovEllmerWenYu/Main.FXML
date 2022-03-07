@@ -75,7 +75,7 @@
                         <MenuItem text="Exit" mnemonicParsing="true" onAction="#handleExitMenuItem">
                             <accelerator>
                                 <KeyCodeCombination alt="UP"
-                                                    code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                                    code="Q" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                     </items>
