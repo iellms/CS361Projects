@@ -75,7 +75,7 @@ public class Controller {
      *
      * @param clickable boolean: true is disable, false is re-enable
      */
-    private void clickableMenuItems(boolean clickable) {
+    private void enableMenuItems(boolean clickable) {
         Close.setDisable(!clickable);
         Save.setDisable(!clickable);
         SaveAs.setDisable(!clickable);
@@ -128,7 +128,7 @@ public class Controller {
         tabPane.getSelectionModel().select(newTab);
 
         // re-enable the buttons if disabled
-        clickableMenuItems(true);
+        enableMenuItems(true);
     }
 
     /**
@@ -195,7 +195,7 @@ public class Controller {
         }
 
         // re-enable the buttons when there are tabs
-        clickableMenuItems(true);
+        enableMenuItems(true);
     }
 
     /**
@@ -267,7 +267,7 @@ public class Controller {
 
         // checks if there's any tab left; if not, disable menu items
         if (tabPane.getTabs().isEmpty()) {
-            clickableMenuItems(false);
+            enableMenuItems(false);
         }
     }
 
