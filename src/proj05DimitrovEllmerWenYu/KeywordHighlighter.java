@@ -8,9 +8,9 @@
 
 package proj05DimitrovEllmerWenYu;
 
-import javafx.application.Application;
+// import javafx.application.Application;
 import javafx.concurrent.Task;
-import javafx.stage.Stage;
+// import javafx.stage.Stage;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  *
  * @author (Anton Dimitrov, Ian Ellmer, Muqing Wen, Alex Yu)
  */
-public class KeywordHighlighter extends Application {
+public class KeywordHighlighter{
 
     private static final String[] KEYWORDS = new String[]{
             "abstract", "assert", "boolean", "break", "byte",
@@ -101,19 +101,6 @@ public class KeywordHighlighter extends Application {
                     }
                 })
                 .subscribe(this::applyHighlighting);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    // Empty start method needs to stay because otherwise the class won't work
-    @Override
-    public void start(Stage primaryStage) {}
-
-    @Override
-    public void stop() {
-        executor.shutdown();
     }
 
     private static StyleSpans<Collection<String>> computeHighlighting(String text) {
