@@ -68,7 +68,7 @@ public class Controller {
     private CompilingRunning compiler;
 
     // printstream for console
-    private PrintStream ps;
+    //private PrintStream ps;
 
     public Controller() {
         this.untitledNumber = 1;
@@ -150,6 +150,13 @@ public class Controller {
         compiler.compileAndRun(fileLocation.get(tabPane.getSelectionModel().getSelectedItem()));
     }
 
+/**
+     * Handler method for compile and run button
+     */
+    @FXML
+    private void handleStopButton() throws IOException {
+        compiler.stop();
+    }
     /**
      * Handler method for about menu bar item. When the about item of the
      * menu bar is clicked, an alert window appears displaying basic information
