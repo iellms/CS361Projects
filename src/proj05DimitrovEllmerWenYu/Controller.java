@@ -154,7 +154,7 @@ public class Controller {
      * Handler method for compile and run button
      */
     @FXML
-    private void handleStopButton() throws IOException {
+    private void handleStopButton(){
         compiler.stop();
     }
     /**
