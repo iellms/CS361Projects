@@ -96,7 +96,7 @@
                  AnchorPane.topAnchor = "30.0">
             <Button fx:id = "compileButton" text="Compile" onAction="#handleCompileButton"/>
             <Button fx:id = "compileRunButton" text="Compile &amp; Run" onAction="#handleCompileRunButton"/>
-            <Button fx:id = "stopButton" text="Stop"/>
+            <Button fx:id = "stopButton" text="Stop" onAction="#handleStopButton/>
         </ToolBar>
         <TabPane fx:id="tabPane" AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
                  AnchorPane.topAnchor = "67.5" AnchorPane.bottomAnchor = "140.0">
