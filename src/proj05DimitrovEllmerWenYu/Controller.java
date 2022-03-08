@@ -81,39 +81,39 @@ public class Controller {
     @FXML
     public void initialize() {
         new KeywordHighlighter(codeArea);
-        this.compiler = new CompilingRunning();
+        this.compiler = new CompilingRunning(console);
 
 
 
         // redirect outputstream to the console
-        Console newConsole = new Console(console);
-        this. ps = new PrintStream(newConsole,true);
-        System.setOut(ps);
-        System.setErr(ps);
+        // Console newConsole = new Console(console);
+        // this. ps = new PrintStream(newConsole,true);
+        // System.setOut(ps);
+        // System.setErr(ps);
 
     }
 
     /**
      * Console subclass for directing output to JavaFX's console
      */
-    public static class Console extends OutputStream{
-        private StyleClassedTextArea output;
+    // public static class Console extends OutputStream{
+    //     private StyleClassedTextArea output;
 
-        public Console(StyleClassedTextArea ta){
-            this.output = ta;
-        }
+    //     public Console(StyleClassedTextArea ta){
+    //         this.output = ta;
+    //     }
 
-        @Override
-        public void write(int i){
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                    output.appendText(String.valueOf((char)i));
-                }
-            });
-        }
+    //     @Override
+    //     public void write(int i){
+    //         Platform.runLater(new Runnable() {
+    //             @Override public void run() {
+    //                 output.appendText(String.valueOf((char)i));
+    //             }
+    //         });
+    //     }
 
 
-    }
+    // }
 
 
     /**
