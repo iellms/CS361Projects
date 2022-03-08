@@ -9,22 +9,27 @@
 package proj05DimitrovEllmerWenYu;
 
 
+import javafx.application.Platform;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.StyleClassedTextArea;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.util.HashMap;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -45,11 +50,25 @@ public class Controller {
 
     @FXML private CodeArea codeArea;
 
+    @FXML private StyleClassedTextArea console;
+
     // a number that stores the next untitled number for "untitled-x"
     private int untitledNumber;
 
-    // a hasmmap that stores what file locations for tabnames
+
+    // a hashmap that stores what file locations for tabnames
     private HashMap<Tab,String> fileLocation;
+
+
+
+    // blocking queue to which the individual characters are sent
+    private BlockingQueue<Integer> queue;
+
+    // CompilingRunning for compile and run
+    private CompilingRunning compiler;
+
+    // printstream for console
+    //private PrintStream ps;
 
     public Controller() {
         this.untitledNumber = 1;
@@ -66,7 +85,39 @@ public class Controller {
     @FXML
     public void initialize() {
         new KeywordHighlighter(codeArea);
+        this.compiler = new CompilingRunning(console);
+
+
+
+        // redirect outputstream to the console
+        // Console newConsole = new Console(console);
+        // this. ps = new PrintStream(newConsole,true);
+        // System.setOut(ps);
+        // System.setErr(ps);
+
     }
+
+    /**
+     * Console subclass for directing output to JavaFX's console
+     */
+    // public static class Console extends OutputStream{
+    //     private StyleClassedTextArea output;
+
+    //     public Console(StyleClassedTextArea ta){
+    //         this.output = ta;
+    //     }
+
+    //     @Override
+    //     public void write(int i){
+    //         Platform.runLater(new Runnable() {
+    //             @Override public void run() {
+    //                 output.appendText(String.valueOf((char)i));
+    //             }
+    //         });
+    //     }
+
+
+    // }
 
 
     /**
@@ -82,6 +133,30 @@ public class Controller {
         Edit.setDisable(!clickable);
     }
 
+    /**
+     * Handler method for compile button.
+     */
+    @FXML
+    private void handleCompileButton(){
+        compiler.compile(fileLocation.get(tabPane.getSelectionModel().getSelectedItem()));
+    }
+
+
+    /**
+     * Handler method for compile and run button
+     */
+    @FXML
+    private void handleCompileRunButton() throws IOException {
+        compiler.compileAndRun(fileLocation.get(tabPane.getSelectionModel().getSelectedItem()));
+    }
+
+/**
+     * Handler method for compile and run button
+     */
+    @FXML
+    private void handleStopButton(){
+        compiler.stop();
+    }
     /**
      * Handler method for about menu bar item. When the about item of the
      * menu bar is clicked, an alert window appears displaying basic information
@@ -148,7 +223,7 @@ public class Controller {
 
         // restrict the file type to only text files
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Text Files", "*.txt") // TODO: extend to other text files (.java, etc.)
+            new FileChooser.ExtensionFilter("Java Files", "*.java") // TODO: extend to other text files (.java, etc.)
         );
         File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
 
@@ -325,7 +400,7 @@ public class Controller {
         //Set extension filter
         // TODO: remove?
         FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                new FileChooser.ExtensionFilter("Java files (*.java)", "*.java");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog

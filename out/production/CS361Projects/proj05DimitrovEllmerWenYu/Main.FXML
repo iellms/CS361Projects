@@ -75,7 +75,7 @@
                         <MenuItem text="Exit" mnemonicParsing="true" onAction="#handleExitMenuItem">
                             <accelerator>
                                 <KeyCodeCombination alt="UP"
-                                                    code="Q" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                                                    code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                     </items>
@@ -96,11 +96,11 @@
                  AnchorPane.topAnchor = "30.0">
             <Button fx:id = "compileButton" text="Compile" onAction="#handleCompileButton"/>
             <Button fx:id = "compileRunButton" text="Compile &amp; Run" onAction="#handleCompileRunButton"/>
-            <Button fx:id = "stopButton" text="Stop" onAction="#handleStopButton"/>
+            <Button fx:id = "stopButton" text="Stop"/>
         </ToolBar>
         <TabPane fx:id="tabPane" AnchorPane.leftAnchor = "0.0" AnchorPane.rightAnchor = "0.0" 
                  AnchorPane.topAnchor = "67.5" AnchorPane.bottomAnchor = "140.0">
-            <Tab fx:id = "firstTab" text="Untitled" onCloseRequest="#handleCloseMenuItem">
+            <Tab text="Untitled" onCloseRequest="#handleCloseMenuItem">
                 <VirtualizedScrollPane>
                     <content>
                         <CodeArea fx:id="codeArea" wrapText="true"/>
