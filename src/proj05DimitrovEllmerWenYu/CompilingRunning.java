@@ -7,10 +7,11 @@
  */
 package proj05DimitrovEllmerWenYu;
 
-import java.io.IOException;
+import java.io.*;
 
 public class CompilingRunning{
     public static Thread currThread = null;
+    private Process currProcess;
 
     public void compile(String filePath){
         if (CompilingRunning.currThread == null){
@@ -25,9 +26,12 @@ public class CompilingRunning{
         if (CompilingRunning.currThread == null){
             CompileAndRun compileRun = new CompileAndRun(filePath);
             CompilingRunning.currThread = compileRun;
+            this.currProcess = compileRun.getProcess();
             compileRun.start();
         }
     }
+
+    public Process getProcess() {return this.currProcess;}
 
     public void stop() {
         //TODO: Fix this method, it isn't working the way that it should
@@ -62,6 +66,7 @@ public class CompilingRunning{
 
             }
         }
+
     }
     private class CompileAndRun extends Thread{
         private String filePath;
@@ -77,17 +82,17 @@ public class CompilingRunning{
         public void run(){
             try {
                 ProcessBuilder compilationProcess = new ProcessBuilder("javac" , filePath);
-                this.compProcess = compilationProcess.start();
                 compilationProcess.redirectError(ProcessBuilder.Redirect.INHERIT);
                 compilationProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
                 compilationProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+                this.compProcess = compilationProcess.start();
                 int exitcode = this.compProcess.waitFor();
                 System.out.println("Compilation completed with exit code: " + exitcode);
                 ProcessBuilder runningProcess = new ProcessBuilder("java", filePath);
-                runningProcess.redirectError(ProcessBuilder.Redirect.INHERIT);
-                runningProcess.redirectInput(ProcessBuilder.Redirect.INHERIT);
-                runningProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+                runningProcess.inheritIO();
                 this.runProcess = runningProcess.start();
+                InputStream in = runProcess.getInputStream();
+                System.out.println("inputstream available? " + in.available());
                 int exitCode = this.runProcess.waitFor(); //GETS STUCK HERE
                 System.out.println("\nRunning completed with exit code : " + exitCode);
                 CompilingRunning.currThread = null;
@@ -100,12 +105,14 @@ public class CompilingRunning{
             }
         }
 
+        public Process getProcess() {return this.runProcess;}
+
     }
     
     public static void main(String[] args){
         CompilingRunning test = new CompilingRunning();
         test.compileAndRun(
-                "/Users/hsyu98/Documents/GitHub/Project5/src/proj05DimitrovEllmerWenYu/JavaScannerExample.java");
+                "/Users/hsyu98/Downloads/JavaScannerExample.java");
         try{
         Thread.sleep(10000);
         }

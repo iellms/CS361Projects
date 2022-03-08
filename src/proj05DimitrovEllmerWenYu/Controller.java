@@ -11,10 +11,13 @@ package proj05DimitrovEllmerWenYu;
 
 import javafx.application.Platform;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
@@ -25,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.util.HashMap;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -52,6 +57,12 @@ public class Controller {
     // a hashmap that stores what file locations for tabnames
     private HashMap<String,String> fileLocation;
 
+    // blocking queue to which the individual characters are sent
+    private BlockingQueue<Integer> queue;
+
+    // CompilingRunning for compile and run
+    private CompilingRunning compiler;
+
     // printstream for console
     private PrintStream ps;
 
@@ -70,14 +81,15 @@ public class Controller {
     @FXML
     public void initialize() {
         new KeywordHighlighter(codeArea);
+        this.compiler = new CompilingRunning();
+
+
+
+        // redirect outputstream to the console
         Console newConsole = new Console(console);
-        this.ps = new PrintStream(newConsole,true);
-        System.setOut(this.ps);
-        System.setErr(this.ps);
-        for (char c: "some text".toCharArray()){
-            newConsole.write(c);
-        }
-//        this.ps.close();
+        this. ps = new PrintStream(newConsole,true);
+        System.setOut(ps);
+        System.setErr(ps);
 
     }
 
@@ -95,10 +107,14 @@ public class Controller {
         public void write(int i){
             Platform.runLater(new Runnable() {
                 @Override public void run() {
-                    output.appendText(String.valueOf((char)i));                }
+                    output.appendText(String.valueOf((char)i));
+                }
             });
         }
+
+
     }
+
 
     /**
      * Helper method to disable/re-enable selected menu items Close, Save, SaveAs,
@@ -118,10 +134,16 @@ public class Controller {
      */
     @FXML
     private void handleCompileButton(){
-        CompilingRunning compiler = new CompilingRunning();
         compiler.compile(fileLocation.get(tabPane.getSelectionModel().getSelectedItem().getText()));
+    }
 
-        System.out.println("Compiling");
+
+    /**
+     * Handler method for compile and run button
+     */
+    @FXML
+    private void handleCompileRunButton() throws IOException {
+        compiler.compileAndRun(fileLocation.get(tabPane.getSelectionModel().getSelectedItem().getText()));
     }
 
     /**
